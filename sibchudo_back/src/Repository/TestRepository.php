@@ -3,10 +3,11 @@
 namespace App\Repository;
 
 
+use App\DatabaseConnector\Database;
 use App\Entity\TestEntity;
 use App\Repository\DataSetter\DefaultDataSetter;
 
-class TestRepository implements RepositoryInterface
+class TestRepository extends AbstractRepository
 {
 
     private $table = "test_table";
@@ -14,16 +15,9 @@ class TestRepository implements RepositoryInterface
 
     public function getAll()
     {
-        $dbconn = pg_connect("host=localhost dbname=admin_sibchudo user=admin_sibchudo password=TimGerVit98*");
         $query = 'SELECT * FROM ' . $this->getTable();
-        $result = pg_query($dbconn, $query);
-        $objects = [];
-        $dataSetter = new DefaultDataSetter();
-        while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
-            $obj = new $this->entity();
-            $dataSetter->setData($line, $obj);
-            $objects[] = $obj;
-        }
+        $data = Database::getInstance()->makeQuery($query);
+        $objects = $this->makeArrayOfEntity(new DefaultDataSetter(), $data);
         return $objects;
     }
 

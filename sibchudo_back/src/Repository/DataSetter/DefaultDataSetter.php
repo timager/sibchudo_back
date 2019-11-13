@@ -4,9 +4,9 @@
 namespace App\Repository\DataSetter;
 
 
-class DefaultDataSetter
+class DefaultDataSetter implements DataSetterInterface
 {
-    public function setData($data, $entity){
+    public function setData(array $data, $entity){
         foreach ($data as $field => $value){
             $entity->{"set" . ucfirst($field)}($value);
         }

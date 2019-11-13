@@ -3,11 +3,27 @@
 
 namespace App\Entity;
 
+use App\Annotation\Field;
+use App\Annotation\Table;
 
+/**
+ * Class TestEntity
+ * @Table(name="test")
+ */
 class TestEntity
 {
+
+    /**
+     * @Field(name="id", type="integer", primary=true)
+     */
     private $id;
+    /**
+     * @Field(name="govno", type="text")
+     */
     private $govno;
+    /**
+     * @Field(name="mocha", type="bool")
+     */
     private $mocha;
 
     /**
