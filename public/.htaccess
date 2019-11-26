@@ -1,3 +1,4 @@
 RewriteEngine On
 
 RewriteRule ^api/(.*)$ index.php/$1 [L]
+RewriteRule ^_(.*)$ index.php/$1 [L]
