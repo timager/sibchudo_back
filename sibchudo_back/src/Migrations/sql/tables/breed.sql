@@ -1,4 +1,4 @@
-drop table if exists breed;
+drop table if exists breed cascade ;
 create table breed
 (
     code    varchar(3) primary key,

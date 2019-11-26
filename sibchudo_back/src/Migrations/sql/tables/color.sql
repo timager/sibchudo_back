@@ -1,4 +1,4 @@
-drop table if exists color;
+drop table if exists color cascade ;
 create table color
 (
     id             serial primary key,

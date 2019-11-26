@@ -5,6 +5,7 @@ create table cat
     name      text    not null,
     color     integer not null,
     litter    integer not null,
-    status    integer not null,
-    community integer null
+    status    cat_status not null,
+    community integer null,
+    gender gender not null
 )

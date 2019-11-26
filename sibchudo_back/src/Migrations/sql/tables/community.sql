@@ -1,4 +1,4 @@
-drop table if exists community;
+drop table if exists community cascade ;
 create table community
 (
     id          serial primary key,

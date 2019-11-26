@@ -1,4 +1,4 @@
-drop table if exists litter;
+drop table if exists litter cascade;
 create table litter
 (
     id        serial primary key,
