@@ -3,12 +3,12 @@
 namespace App\Repository;
 
 
-use App\Entity\TestEntity;
+use App\Entity\Cat;
 
-class TestRepository extends AbstractRepository
+class CatRepository extends AbstractRepository
 {
 
-    private $entity = TestEntity::class;
+    private $entity = Cat::class;
 
 
     public function getEntityClass(): string
