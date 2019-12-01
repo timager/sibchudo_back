@@ -15,18 +15,13 @@ use ReflectionClass;
 
 abstract class AbstractRepository implements RepositoryInterface {
 
-    protected $reader;
+    protected Reader $reader;
 
-    /**
-     * AbstractRepository constructor.
-     * @param $reader
-     */
     public function __construct(Reader $reader) {
         $this->reader = $reader;
     }
 
-
-    protected function makeArrayOfEntity(DataSetterInterface $dataSetter, array $array) {
+    protected function makeArrayOfEntity(DataSetterInterface $dataSetter, ?array $array) {
         $objects = [];
         foreach($array as $datum) {
             $objects[] = $this->makeEntity($dataSetter, $datum);
@@ -47,16 +42,14 @@ abstract class AbstractRepository implements RepositoryInterface {
     public function getAll(): array {
         $query = 'select * from ' . $this->getTable();
         $data = Database::getInstance()->makeQuery($query);
-        $objects = $this->makeArrayOfEntity(new DefaultDataSetter($this->reader), $data);
-        return $objects;
+        return $this->makeArrayOfEntity(new DefaultDataSetter($this->reader), $data ? $data : []);
     }
 
     public function getById($id): ?EntityInterface {
         $query = 'select * from ' . $this->getTable() . ' where id=$1';
         $data = Database::getInstance()->makeQuery($query, [$id]);
         if($data && count($data) == 1) {
-            $object = $this->makeEntity(new DefaultDataSetter($this->reader), $data[0]);
-            return $object;
+            return $this->makeEntity(new DefaultDataSetter($this->reader), $data[0]);
         }
         return null;
     }
@@ -92,7 +85,6 @@ abstract class AbstractRepository implements RepositoryInterface {
         $fields = $dataSetter->getData($entity);
         $query = 'insert into ' . $this->getTable() . '(' . join(",", array_keys($fields)) . ') 
         values (' . $this->getInsertValuesString($fields) . ') returning id;';
-        dump($query,$fields);
         $data = Database::getInstance()->makeQuery($query, array_values($fields));
         if(isset($data[0]['id'])) {
             $dataSetter->addId($entity, $data[0]['id']);

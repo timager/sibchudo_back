@@ -8,7 +8,11 @@ use Exception;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class Database {
-    private static $self;
+    private static Database $self;
+    private static bool $init = false;
+    /**
+     * @var resource|false $dbConnector
+     */
     private $dbConnector;
 
     private static function init() {
@@ -20,10 +24,11 @@ class Database {
         $host = $connection['host'];
         $dbName = $connection['db_name'];
         self::$self->dbConnector = pg_connect("host=" . $host . " dbname=" . $dbName . " user=" . $user . " password=" . $password);
+        self::$init = true;
     }
 
     public static function getInstance(): Database {
-        if(self::$self == null) {
+        if(!self::$init) {
             self::init();
         }
         return self::$self;
@@ -32,8 +37,7 @@ class Database {
     public function makeQuery($query, $params = []) {
         try {
             $result = pg_query_params($this->dbConnector, $query, $params);
-            $data = pg_fetch_all($result);
-            return $data;
+            return pg_fetch_all($result);
         } catch(Exception $e) {
             throw new HttpException(500, $e->getMessage());
         }

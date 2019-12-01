@@ -9,25 +9,32 @@ namespace App\Annotation;
  * @Target({"PROPERTY"})
  *
  */
+class Field {
+    private string $type;
+    private string $name;
+    private bool $primary = false;
+    private bool $isNull = false;
 
-class Field
-{
-    private $name;
-
-
-    public function __construct(array $data)
-    {
-        foreach ($data as $k => $v){
+    public function __construct(array $data) {
+        foreach($data as $k => $v) {
             $this->{$k} = $v;
         }
     }
 
-    /**
-     * @return mixed
-     */
-    public function getName()
-    {
+    public function getType(): string {
+        return $this->type;
+    }
+
+    public function getName(): string {
         return $this->name;
+    }
+
+    public function getPrimary(): bool {
+        return $this->primary;
+    }
+
+    public function isNull(): bool {
+        return $this->isNull;
     }
 
 

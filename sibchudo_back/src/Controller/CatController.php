@@ -84,19 +84,15 @@ class CatController extends AbstractController {
      * @return Response
      */
     public function testInsert(RepositoryLoader $loader) {
-        try {
-            $cat = new Cat();
-            $cat->setColorId(1);
-            $cat->setCommunityId(1);
-            $cat->setLitterId(1);
-            $cat->setName('Дегробайт');
-            $cat->setGender(Cat::MALE);
-            $cat->setStatus(Cat::SALE);
-            $result = $loader->loadRepository(CatRepository::class)->insert($cat);
-            dump($cat);
-            return new Response($result);
-        } catch(Exception $e) {
-            throw new HttpException(500);
-        }
+        $cat = new Cat();
+        $cat->setColorId(1);
+        $cat->setCommunityId(1);
+        $cat->setLitterId(1);
+        $cat->setName('Дегробайт');
+        $cat->setGender(Cat::MALE);
+        $cat->setStatus(Cat::SALE);
+        $result = $loader->loadRepository(CatRepository::class)->insert($cat);
+        dump($cat);
+        return new Response($result);
     }
 }

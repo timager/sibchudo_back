@@ -9,26 +9,18 @@ namespace App\Annotation;
  * @Target({"CLASS"})
  *
  */
+class Table {
+    private string $name;
 
-class Table
-{
-    private $name;
-
-    public function __construct(array $data)
-    {
-        foreach ($data as $k => $v){
+    public function __construct(array $data) {
+        foreach($data as $k => $v) {
             $this->{$k} = $v;
         }
     }
 
-    /**
-     * @return mixed
-     */
-    public function getName()
-    {
+    public function getName(): string {
         return $this->name;
     }
-
 
 
 }

@@ -8,8 +8,7 @@ use App\Entity\Cat;
 class CatRepository extends AbstractRepository
 {
 
-    private $entity = Cat::class;
-
+    private string $entity = Cat::class;
 
     public function getEntityClass(): string
     {

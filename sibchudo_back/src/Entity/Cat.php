@@ -23,127 +23,127 @@ class Cat implements EntityInterface {
     /**
      * @Field(name="id")
      */
-    private $id;
+    private int $id;
 
     /**
      * @Field(name="name")
      */
-    private $name;
+    private string $name;
 
     /**
      * @Field(name="color")
      */
-    private $colorId;
+    private int $colorId;
 
     /**
      * @Field(name="litter")
      */
-    private $litterId;
+    private int $litterId;
 
     /**
      * @Field(name="status")
      */
-    private $status;
+    private string $status;
 
     /**
      * @Field(name="community")
      */
-    private $communityId;
+    private int $communityId;
 
     /**
      * @Field(name="gender")
      */
-    private $gender;
-
-    /**
-     * @return mixed
-     */
-    public function getName() {
-        return $this->name;
-    }
-
-    /**
-     * @param mixed $name
-     */
-    public function setName($name) {
-        $this->name = $name;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getColorId() {
-        return $this->colorId;
-    }
-
-    /**
-     * @param mixed $colorId
-     */
-    public function setColorId($colorId) {
-        $this->colorId = $colorId;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getLitterId() {
-        return $this->litterId;
-    }
-
-    /**
-     * @param mixed $litterId
-     */
-    public function setLitterId($litterId) {
-        $this->litterId = $litterId;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getStatus() {
-        return $this->status;
-    }
-
-    /**
-     * @param mixed $status
-     */
-    public function setStatus($status) {
-        $this->status = $status;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCommunityId() {
-        return $this->communityId;
-    }
-
-    /**
-     * @param mixed $communityId
-     */
-    public function setCommunityId($communityId) {
-        $this->communityId = $communityId;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getGender() {
-        return $this->gender;
-    }
-
-    /**
-     * @param mixed $gender
-     */
-    public function setGender($gender) {
-        $this->gender = $gender;
-    }
+    private string $gender;
 
     /**
      * @return int
      */
     public function getId():int {
         return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName(string $name): void {
+        $this->name = $name;
+    }
+
+    /**
+     * @return int
+     */
+    public function getColorId(): int {
+        return $this->colorId;
+    }
+
+    /**
+     * @param int $colorId
+     */
+    public function setColorId(int $colorId): void {
+        $this->colorId = $colorId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLitterId(): int {
+        return $this->litterId;
+    }
+
+    /**
+     * @param int $litterId
+     */
+    public function setLitterId(int $litterId): void {
+        $this->litterId = $litterId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatus(): string {
+        return $this->status;
+    }
+
+    /**
+     * @param string $status
+     */
+    public function setStatus(string $status): void {
+        $this->status = $status;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCommunityId(): int {
+        return $this->communityId;
+    }
+
+    /**
+     * @param int $communityId
+     */
+    public function setCommunityId(int $communityId): void {
+        $this->communityId = $communityId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGender(): string {
+        return $this->gender;
+    }
+
+    /**
+     * @param string $gender
+     */
+    public function setGender(string $gender): void {
+        $this->gender = $gender;
     }
 
 
