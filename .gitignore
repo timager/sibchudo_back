@@ -1,2 +1,6 @@
 *.lock
 config
+*.log
+node_modules
+/public/assets
+/public/js
