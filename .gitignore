@@ -5,3 +5,4 @@ node_modules
 /public/assets
 /public/js
 logs
+document_errors
