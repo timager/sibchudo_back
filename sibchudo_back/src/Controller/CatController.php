@@ -6,6 +6,7 @@ use App\Entity\Cat;
 use App\Repository\CatRepository;
 use App\Service\RepositoryLoader;
 use Exception;
+use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerBuilder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -14,11 +15,13 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use TypeError;
 
-class CatController extends AbstractController {
+class CatController extends AbstractController
+{
     /**
      * @Route("/cat", name="cat")
      */
-    public function index() {
+    public function index()
+    {
         return $this->json([
             'message' => 'Welcome to your new controller!',
             'path' => 'src/Controller/CatController.php',
@@ -31,9 +34,13 @@ class CatController extends AbstractController {
      * @param RepositoryLoader $loader
      * @return JsonResponse
      */
-    public function getById($id, RepositoryLoader $loader) {
+    public function getById($id, RepositoryLoader $loader)
+    {
         $cat = $loader->loadRepository(CatRepository::class)->getById($id);
-        $json = SerializerBuilder::create()->build()->serialize($cat, 'json');
+        $context = SerializationContext::create();
+        $context->setSerializeNull(true);
+        $context->enableMaxDepthChecks();
+        $json = SerializerBuilder::create()->build()->serialize($cat, 'json', $context);
         return new JsonResponse($json, 200, [], true);
     }
 
@@ -44,12 +51,13 @@ class CatController extends AbstractController {
      * @return JsonResponse
      * @throws Exception
      */
-    public function deleteById($id, RepositoryLoader $loader) {
+    public function deleteById($id, RepositoryLoader $loader)
+    {
         $cat = $loader->loadRepository(CatRepository::class)->getById($id);
         try {
             $res = $loader->loadRepository(CatRepository::class)->delete($cat);
             return new JsonResponse($res);
-        } catch(TypeError $e) {
+        } catch (TypeError $e) {
             return new JsonResponse($e->getMessage(), 404);
         }
     }
@@ -59,7 +67,8 @@ class CatController extends AbstractController {
      * @param RepositoryLoader $loader
      * @return JsonResponse
      */
-    public function testUpdate(RepositoryLoader $loader) {
+    public function testUpdate(RepositoryLoader $loader)
+    {
         /**
          * @var Cat[] $cats
          */
@@ -67,7 +76,7 @@ class CatController extends AbstractController {
         $cats = $repository->getAll();
         $cat = array_pop($cats);
         dump($cat);
-        if($cat->getStatus() == Cat::RESERVED) {
+        if ($cat->getStatus() == Cat::RESERVED) {
             $cat->setStatus(Cat::SALE);
         } else {
             $cat->setStatus(Cat::RESERVED);
@@ -83,7 +92,8 @@ class CatController extends AbstractController {
      * @param RepositoryLoader $loader
      * @return Response
      */
-    public function testInsert(RepositoryLoader $loader) {
+    public function testInsert(RepositoryLoader $loader)
+    {
         $cat = new Cat();
         $cat->setColorId(1);
         $cat->setCommunityId(1);
@@ -95,4 +105,6 @@ class CatController extends AbstractController {
         dump($cat);
         return new Response($result);
     }
+
+
 }
