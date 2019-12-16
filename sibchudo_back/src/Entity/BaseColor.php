@@ -9,9 +9,9 @@ use App\Annotation\Table;
 /**
  * Class BaseColor
  * @package App\Entity
- * @Table(name="base_color")
+ * @Table(name="base_color",repository="App\Repository\BaseColorRepository")
  */
-class BaseColor {
+class BaseColor extends AbstractEntity{
     /**
      * @Field(name="id")
      */
@@ -19,7 +19,7 @@ class BaseColor {
     /**
      * @Field(name="code")
      */
-    private string $code;
+    private ?string $code;
     /**
      * @Field(name="name")
      */
@@ -27,7 +27,7 @@ class BaseColor {
     /**
      * @Field(name="name_ru")
      */
-    private string $nameRu;
+    private ?string $nameRu;
 
     /**
      * @return string

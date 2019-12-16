@@ -10,9 +10,9 @@ use App\Annotation\Table;
 /**
  * Class ColorCode
  * @package App\Entity
- * @Table(name="color_code")
+ * @Table(name="color_code",repository="App\Repository\ColorCodeRepository")
  */
-class ColorCode implements EntityInterface {
+class ColorCode extends AbstractEntity {
     /**
      * @Field(name="id")
      */

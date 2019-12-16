@@ -5,196 +5,207 @@ namespace App\Entity;
 
 use App\Annotation\Field;
 use App\Annotation\Table;
+use JMS\Serializer\Annotation\Accessor;
 
 /**
  * Class Color
  * @package App\Entity
- * @Table(name="color")
+ * @Table(name="color",repository="App\Repository\ColorRepository")
  */
-class Color implements EntityInterface {
+class Color extends AbstractEntity {
     /**
      * @Field(name="id")
      */
     private int $id;
     /**
-     * @Field(name="breed")
+     * @Field(name="breed", type="App\Entity\Breed")
+     * @Accessor(getter="getBreed")
      */
-    private string $breedCode;
+    private EntityInterface $breed;
     /**
-     * @Field(name="base_color")
+     * @Field(name="base_color", type="App\Entity\BaseColor")
+     * @Accessor(getter="getBaseColor")
      */
-    private string $baseColorCode;
+    private EntityInterface $baseColor;
     /**
-     * @Field(name="base_color_add")
+     * @Field(name="base_color_add", type="App\Entity\BaseColor")
+     * @Accessor(getter="getBaseColorAdditional")
      */
-    private string $baseColorAdditionalCode;
+    private ?EntityInterface $baseColorAdditional;
     /**
-     * @Field(name="code_0")
+     * @Field(name="code_0", type="App\Entity\ColorCode")
+     * @Accessor(getter="getCode0")
      */
-    private string $code0Code;
+    private ?EntityInterface $code0;
     /**
-     * @Field(name="code_1")
+     * @Field(name="code_1", type="App\Entity\ColorCode")
+     * @Accessor(getter="getCode1")
      */
-    private string $code1Code;
+    private ?EntityInterface $code1;
     /**
-     * @Field(name="code_2")
+     * @Field(name="code_2", type="App\Entity\ColorCode")
+     * @Accessor(getter="getCode2")
      */
-    private string $code2Code;
+    private ?EntityInterface $code2;
     /**
-     * @Field(name="code_3")
+     * @Field(name="code_3", type="App\Entity\ColorCode")
+     * @Accessor(getter="getCode3")
      */
-    private string $code3Code;
+    private ?EntityInterface $code3;
     /**
-     * @Field(name="tail")
+     * @Field(name="tail", type="App\Entity\ColorCode")
+     * @Accessor(getter="getTail")
      */
-    private string $tailCode;
+    private ?EntityInterface $tail;
     /**
-     * @Field(name="eyes")
+     * @Field(name="eyes", type="App\Entity\ColorCode")
+     * @Accessor(getter="getEyes")
      */
-    private string $eyesCode;
+    private ?EntityInterface $eyes;
     /**
-     * @Field(name="ears")
+     * @Field(name="ears", type="App\Entity\ColorCode")
+     * @Accessor(getter="getEars")
      */
-    private string $earsCode;
+    private ?EntityInterface $ears;
 
     /**
-     * @return string
+     * @return Breed|EntityInterface
      */
-    public function getBreedCode(): string {
-        return $this->breedCode;
+    public function getBreed(): Breed {
+        return $this->load($this->breed);
     }
 
     /**
-     * @param string $breedCode
+     * @param Breed $breed
      */
-    public function setBreedCode(string $breedCode): void {
-        $this->breedCode = $breedCode;
+    public function setBreed(Breed $breed): void {
+        $this->breed = $breed;
     }
 
     /**
-     * @return string
+     * @return BaseColor|EntityInterface
      */
-    public function getBaseColorCode(): string {
-        return $this->baseColorCode;
+    public function getBaseColor(): BaseColor {
+        return $this->load($this->baseColor);
     }
 
     /**
-     * @param string $baseColorCode
+     * @param mixed $baseColor
      */
-    public function setBaseColorCode(string $baseColorCode): void {
-        $this->baseColorCode = $baseColorCode;
+    public function setBaseColor(BaseColor $baseColor): void {
+        $this->baseColor = $baseColor;
     }
 
     /**
-     * @return string
+     * @return BaseColor|EntityInterface
      */
-    public function getBaseColorAdditionalCode(): string {
-        return $this->baseColorAdditionalCode;
+    public function getBaseColorAdditional(): ?BaseColor {
+        return $this->load($this->baseColorAdditional);
     }
 
     /**
-     * @param string $baseColorAdditionalCode
+     * @param BaseColor $baseColorAdditional
      */
-    public function setBaseColorAdditionalCode(string $baseColorAdditionalCode): void {
-        $this->baseColorAdditionalCode = $baseColorAdditionalCode;
+    public function setBaseColorAdditional(BaseColor $baseColorAdditional): void {
+        $this->baseColorAdditional = $baseColorAdditional;
     }
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getCode0Code(): string {
-        return $this->code0Code;
+    public function getCode0() {
+        return $this->load($this->code0);
     }
 
     /**
-     * @param string $code0Code
+     * @param mixed $code0
      */
-    public function setCode0Code(string $code0Code): void {
-        $this->code0Code = $code0Code;
+    public function setCode0($code0): void {
+        $this->code0 = $code0;
     }
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getCode1Code(): string {
-        return $this->code1Code;
+    public function getCode1() {
+        return $this->load($this->code1);
     }
 
     /**
-     * @param string $code1Code
+     * @param mixed $code1
      */
-    public function setCode1Code(string $code1Code): void {
-        $this->code1Code = $code1Code;
+    public function setCode1($code1): void {
+        $this->code1 = $code1;
     }
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getCode2Code(): string {
-        return $this->code2Code;
+    public function getCode2() {
+        return $this->load($this->code2);
     }
 
     /**
-     * @param string $code2Code
+     * @param mixed $code2
      */
-    public function setCode2Code(string $code2Code): void {
-        $this->code2Code = $code2Code;
+    public function setCode2($code2): void {
+        $this->code2 = $code2;
     }
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getCode3Code(): string {
-        return $this->code3Code;
+    public function getCode3() {
+        return $this->load($this->code3);
     }
 
     /**
-     * @param string $code3Code
+     * @param mixed $code3
      */
-    public function setCode3Code(string $code3Code): void {
-        $this->code3Code = $code3Code;
+    public function setCode3($code3): void {
+        $this->code3 = $code3;
     }
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getTailCode(): string {
-        return $this->tailCode;
+    public function getTail() {
+        return $this->load($this->tail);
     }
 
     /**
-     * @param string $tailCode
+     * @param mixed $tail
      */
-    public function setTailCode(string $tailCode): void {
-        $this->tailCode = $tailCode;
+    public function setTail($tail): void {
+        $this->tail = $tail;
     }
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getEyesCode(): string {
-        return $this->eyesCode;
+    public function getEyes() {
+        return $this->load($this->eyes);
     }
 
     /**
-     * @param string $eyesCode
+     * @param mixed $eyes
      */
-    public function setEyesCode(string $eyesCode): void {
-        $this->eyesCode = $eyesCode;
+    public function setEyes($eyes): void {
+        $this->eyes = $eyes;
     }
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getEarsCode(): string {
-        return $this->earsCode;
+    public function getEars() {
+        return $this->load($this->ears);
     }
 
     /**
-     * @param string $earsCode
+     * @param mixed $ears
      */
-    public function setEarsCode(string $earsCode): void {
-        $this->earsCode = $earsCode;
+    public function setEars($ears): void {
+        $this->ears = $ears;
     }
 
     /**

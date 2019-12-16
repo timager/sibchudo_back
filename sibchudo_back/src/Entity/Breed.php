@@ -10,9 +10,9 @@ use App\Annotation\Table;
 /**
  * Class Breed
  * @package App\Entity
- * @Table(name="breed")
+ * @Table(name="breed",repository="App\Repository\BreedRepository")
  */
-class Breed implements EntityInterface {
+class Breed extends AbstractEntity {
 
     /**
      * @Field(name="id")
@@ -21,7 +21,7 @@ class Breed implements EntityInterface {
     /**
      * @Field(name="code")
      */
-    private string $code;
+    private ?string $code;
     /**
      * @Field(name="name")
      */
@@ -29,7 +29,7 @@ class Breed implements EntityInterface {
     /**
      * @Field(name="name_ru")
      */
-    private string $nameRu;
+    private ?string $nameRu;
 
     /**
      * @return string

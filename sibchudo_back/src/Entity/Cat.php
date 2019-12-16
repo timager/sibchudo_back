@@ -5,12 +5,13 @@ namespace App\Entity;
 
 use App\Annotation\Field;
 use App\Annotation\Table;
+use JMS\Serializer\Annotation as Serializer;
+use JMS\Serializer\Annotation\Accessor;
 
 /**
- * Class TestEntity
- * @Table(name="cat")
+ * @Table(name="cat",repository="App\Repository\CatRepository")
  */
-class Cat implements EntityInterface {
+class Cat extends AbstractEntity {
 
     const MALE = "male";
     const FEMALE = "female";
@@ -31,14 +32,18 @@ class Cat implements EntityInterface {
     private string $name;
 
     /**
-     * @Field(name="color")
+     * @Field(name="color", type="App\Entity\Color")
+     * @Accessor(getter="getColor")
+     * @Serializer\MaxDepth(4)
      */
-    private int $colorId;
+    private EntityInterface $color;
 
     /**
-     * @Field(name="litter")
+     * @Field(name="litter", type="App\Entity\Litter")
+     * @Accessor(getter="getLitter")
+     * @Serializer\MaxDepth(2)
      */
-    private int $litterId;
+    private EntityInterface $litter;
 
     /**
      * @Field(name="status")
@@ -46,9 +51,11 @@ class Cat implements EntityInterface {
     private string $status;
 
     /**
-     * @Field(name="community")
+     * @Field(name="community", type="App\Entity\Community")
+     * @Accessor(getter="getCommunity")
+     * @Serializer\MaxDepth(1)
      */
-    private int $communityId;
+    private ?EntityInterface $community;
 
     /**
      * @Field(name="gender")
@@ -56,80 +63,143 @@ class Cat implements EntityInterface {
     private string $gender;
 
     /**
-     * @return int
+     * @Field(name="owner", type="App\Entity\Owner")
+     * @Accessor(getter="getOwner")
+     * @Serializer\MaxDepth(1)
      */
-    public function getId():int {
-        return $this->id;
-    }
+    private ?EntityInterface $owner;
 
     /**
-     * @return string
+     * @Field(name="title", type="App\Entity\Title")
+     * @Accessor(getter="getTitle")
+     * @Serializer\MaxDepth(1)
      */
-    public function getName(): string {
+    private ?EntityInterface $title;
+
+    /**
+     * @Field(name="class", type="App\Entity\CatClass")
+     * @Accessor(getter="getCatClass")
+     * @Serializer\MaxDepth(1)
+     */
+    private EntityInterface $catClass;
+
+    /**
+     * @Field(name="avatar", type="App\Entity\Media")
+     * @Accessor(getter="getAvatar")
+     * @Serializer\MaxDepth(1)
+     */
+    private EntityInterface $avatar;
+
+    /**
+     * @return mixed
+     */
+    public function getName() {
         return $this->name;
     }
 
     /**
-     * @param string $name
+     * @param mixed $name
      */
-    public function setName(string $name): void {
+    public function setName($name): void {
         $this->name = $name;
     }
 
     /**
-     * @return int
+     * @return Color|EntityInterface
      */
-    public function getColorId(): int {
-        return $this->colorId;
+    public function getColor(): Color {
+        return $this->load($this->color);
     }
 
     /**
-     * @param int $colorId
+     * @param Color $color
      */
-    public function setColorId(int $colorId): void {
-        $this->colorId = $colorId;
+    public function setColor(Color $color): void {
+        $this->color = $color;
     }
 
     /**
-     * @return int
+     * @return EntityInterface|Litter
      */
-    public function getLitterId(): int {
-        return $this->litterId;
+    public function getLitter(): Litter {
+        return $this->load($this->litter);
     }
 
     /**
-     * @param int $litterId
+     * @param $litter
      */
-    public function setLitterId(int $litterId): void {
-        $this->litterId = $litterId;
+    public function setLitter($litter): void {
+        $this->litter = $litter;
     }
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getStatus(): string {
+    public function getStatus() {
         return $this->status;
     }
 
     /**
-     * @param string $status
+     * @param mixed $status
      */
-    public function setStatus(string $status): void {
+    public function setStatus($status): void {
         $this->status = $status;
     }
 
     /**
-     * @return int
+     * @return Community|EntityInterface
      */
-    public function getCommunityId(): int {
-        return $this->communityId;
+    public function getCommunity(): ?Community {
+        return $this->load($this->community);
     }
 
     /**
-     * @param int $communityId
+     * @param Community $community
      */
-    public function setCommunityId(int $communityId): void {
-        $this->communityId = $communityId;
+    public function setCommunity($community): void {
+        $this->community = $community;
+    }
+
+    /**
+     * @return EntityInterface|Owner
+     */
+    public function getOwner(): Owner {
+        return $this->load($this->owner);
+    }
+
+    /**
+     * @param Owner $owner
+     */
+    public function setOwner(Owner $owner): void {
+        $this->owner = $owner;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTitle() {
+        return $this->title;
+    }
+
+    /**
+     * @param mixed $title
+     */
+    public function setTitle($title): void {
+        $this->title = $title;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCatClass() {
+        return $this->catClass;
+    }
+
+    /**
+     * @param mixed $catClass
+     */
+    public function setCatClass($catClass): void {
+        $this->catClass = $catClass;
     }
 
     /**
@@ -146,5 +216,22 @@ class Cat implements EntityInterface {
         $this->gender = $gender;
     }
 
+    /**
+     * @return EntityInterface|Media|null
+     */
+    public function getAvatar() {
+        return $this->load($this->avatar);
+    }
 
+    /**
+     * @param Media|null $avatar
+     */
+    public function setAvatar(?Media $avatar): void {
+        $this->avatar = $avatar;
+    }
+
+
+    public function getId(): int {
+        return $this->id;
+    }
 }

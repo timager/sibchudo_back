@@ -6,65 +6,65 @@ namespace App\Entity;
 use App\Annotation\Field;
 use App\Annotation\Table;
 use DateTime;
+use JMS\Serializer\Annotation\Accessor;
 
 /**
  * Class Litter
  * @package App\Entity
- * @Table(name="litter")
+ * @Table(name="litter",repository="App\Repository\LitterRepository")
  */
-class Litter implements EntityInterface {
-
+class Litter extends AbstractEntity {
     /**
      * @Field(name="id")
      */
     private int $id;
     /**
-     * @Field(name="mather")
+     * @Field(name="mather", type="App\Entity\Cat")
+     * @Accessor(getter="getMather")
      */
-    private int $matherId;
+    private ?EntityInterface $mather;
     /**
-     * @Field(name="father")
+     * @Field(name="father", type="App\Entity\Cat")
+     * @Accessor(getter="getFather")
      */
-    private int $fatherId;
+    private ?EntityInterface $father;
     /**
      * @Field(name="birthday")
      */
     private DateTime $birthday;
-    /**
-     * @Field(name="community")
-     */
-    private int $communityId;
-    /**
-     * @Field(name="litter")
-     */
-    private int $litterId;
 
     /**
-     * @return int
+     * @Field(name="community", type="App\Entity\Community")
+     * @Accessor(getter="getCommunity")
      */
-    public function getMatherId(): int {
-        return $this->matherId;
+    private EntityInterface $community;
+
+    /**
+     * @return Cat|EntityInterface|null
+     */
+    public function getMather(): ?Cat {
+        return $this->load($this->mather);
     }
 
     /**
-     * @param int $matherId
+     * @param Cat $mather
      */
-    public function setMatherId(int $matherId): void {
-        $this->matherId = $matherId;
+    public function setMather(Cat $mather): void {
+        $this->mather = $mather;
     }
 
     /**
-     * @return int
+     * @return Cat|EntityInterface|null
      */
-    public function getFatherId(): int {
-        return $this->fatherId;
+    public function getFather(): ?Cat {
+        return $this->load($this->father);
     }
 
     /**
-     * @param int $fatherId
+     * @param Cat $father
      */
-    public function setFatherId(int $fatherId): void {
-        $this->fatherId = $fatherId;
+    public function setFather(Cat $father): void {
+        $this->father = $father;
     }
 
     /**
@@ -82,32 +82,19 @@ class Litter implements EntityInterface {
     }
 
     /**
-     * @return int
+     * @return Community|EntityInterface|null
      */
-    public function getCommunityId(): int {
-        return $this->communityId;
+    public function getCommunity() {
+        return $this->load($this->community);
     }
 
     /**
-     * @param int $communityId
+     * @param EntityInterface $community
      */
-    public function setCommunityId(int $communityId): void {
-        $this->communityId = $communityId;
+    public function setCommunity(EntityInterface $community): void {
+        $this->community = $community;
     }
 
-    /**
-     * @return int
-     */
-    public function getLitterId(): int {
-        return $this->litterId;
-    }
-
-    /**
-     * @param int $litterId
-     */
-    public function setLitterId(int $litterId): void {
-        $this->litterId = $litterId;
-    }
 
     /**
      * @return int
