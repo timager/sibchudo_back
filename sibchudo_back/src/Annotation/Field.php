@@ -10,10 +10,10 @@ namespace App\Annotation;
  *
  */
 class Field {
-    private string $type;
+    private ?string $type = null;
     private string $name;
-    private bool $primary = false;
-    private bool $isNull = false;
+//    private bool $primary = false;
+//    private bool $isNull = false;
 
     public function __construct(array $data) {
         foreach($data as $k => $v) {
@@ -21,21 +21,21 @@ class Field {
         }
     }
 
-    public function getType(): string {
+    public function getType(): ?string {
         return $this->type;
     }
 
     public function getName(): string {
         return $this->name;
     }
-
-    public function getPrimary(): bool {
-        return $this->primary;
-    }
-
-    public function isNull(): bool {
-        return $this->isNull;
-    }
+//
+//    public function getPrimary(): bool {
+//        return $this->primary;
+//    }
+//
+//    public function isNull(): bool {
+//        return $this->isNull;
+//    }
 
 
 }

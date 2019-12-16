@@ -11,6 +11,7 @@ namespace App\Annotation;
  */
 class Table {
     private string $name;
+    private string $repository;
 
     public function __construct(array $data) {
         foreach($data as $k => $v) {
@@ -21,6 +22,14 @@ class Table {
     public function getName(): string {
         return $this->name;
     }
+
+    /**
+     * @return string
+     */
+    public function getRepository(): string {
+        return $this->repository;
+    }
+
 
 
 }
