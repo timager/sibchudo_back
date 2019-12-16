@@ -4,3 +4,4 @@ config
 node_modules
 /public/assets
 /public/js
+logs
