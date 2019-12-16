@@ -6,6 +6,7 @@ namespace App\Repository\DataSetter;
 
 use App\Annotation\Field;
 use App\Entity\EntityInterface;
+use App\Entity\LazyEntity;
 use Doctrine\Common\Annotations\Reader;
 use ReflectionClass;
 
@@ -31,7 +32,17 @@ class DefaultDataSetter implements DataSetterInterface
             $field = $this->reader->getPropertyAnnotation($property, Field::class);
             if($field !== null && array_key_exists($field->getName(), $data)){
                 $property->setAccessible(true);
-                $property->setValue($entity, $data[$field->getName()]);
+                if($field->getType() !== null && $data[$field->getName()] !== null){
+                    $lazy = new LazyEntity($data[$field->getName()], $field->getType(), $this->reader);
+                    $property->setValue($entity, $lazy);
+                }else{
+                    $type = $property->getType();
+                    $typeName = $type !== null ? $type->getName() : null;
+                    if($typeName === "DateTime")
+                        $property->setValue($entity, new $typeName($data[$field->getName()]));
+                    else
+                        $property->setValue($entity, $data[$field->getName()]);
+                }
             }
         }
         return $entity;
