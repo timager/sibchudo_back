@@ -1,0 +1,11 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap&subset=cyrillic,cyrillic-ext');
+
+body{
+    margin: 0 !important;
+    font-family: Montserrat, sans-serif;
+    font-weight: 400;
+}
+
+.content{
+    margin: 5% 20%;
+}
