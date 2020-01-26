@@ -1,11 +1,31 @@
-import React, {Component} from "react";
+import React, {Component, Fragment} from "react";
+
+export function getCatFullName(cat, br = '') {
+    if(!cat){
+        return ["..."];
+    }
+    let fullNameArray = [];
+    if (cat.title) {
+        fullNameArray.push(cat.title.code);
+    }
+    fullNameArray.push(cat.name);
+    fullNameArray.push(cat.litter.community.name);
+    if (cat.community) {
+        fullNameArray.push(" из питомника " + cat.community.name);
+    }
+    return fullNameArray;
+
+}
 
 class CatName extends Component {
     render() {
+        let callback = this.props.breaks ?
+            (item, i)=>{return <p key={i}>{item}</p>}:
+            (item)=>{return item + " "};
+
         return (
-            <span>
-                {this.props.cat.name + " " + this.props.cat.litter.community.name}
-                {(this.props.cat.community ? " из питомника " + this.props.cat.community.name : "")}
+            <span className={this.props.className}>
+                {getCatFullName(this.props.cat).map(callback)}
             </span>
         );
     }

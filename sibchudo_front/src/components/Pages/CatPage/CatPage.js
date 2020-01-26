@@ -8,6 +8,8 @@ import Loader from 'react-loader-spinner';
 import defaultCatImage from "./assets/default-cat.jpg";
 import CatInfo from "./CatInfo/CatInfo";
 import CatName from "../../BaseElements/Cat/CatName/CatName";
+import CatAvatar from "../../BaseElements/Cat/CatAvatar/CatAvatar";
+import LitterPreview from "../../BaseElements/Litter/LitterPreview/LitterPreview";
 
 const catTemplate = {
     name: "Загрузка...",
@@ -46,19 +48,29 @@ class CatPage extends Component {
         let cat;
         if (!this.state.cat) {
             cat = catTemplate;
-            avatar = <Loader type="Oval" width={250} height={250}/>
         } else {
             cat = this.state.cat;
-            avatar = <Img src={cat.avatar ? [cat.avatar.destination, defaultCatImage] : defaultCatImage}/>
         }
         return (
             <AbstractPage title={cat.name}>
                 <TitleH2 text={<CatName cat={cat}/>}/>
                 <div className={"cat_info_container"}>
                     <CatInfo cat={cat}/>
-                    <div className={"cat_avatar"}>
-                        {avatar}
-                    </div>
+                    <br/>
+                    <CatAvatar cat={cat}/>
+                </div>
+                <div className={"medias"}>
+                    {cat.medias ? cat.medias.map((item)=>{
+                        return <Img
+                            src={item.destination}
+                            key={item.id}
+                            loader={<Loader unLoader={defaultCatImage} type={"Oval"} width={300} height={300}/>}/>
+                    }):""}
+                </div>
+                <div>
+                    {cat.litters ? cat.litters.map((item)=>{
+                        return <LitterPreview litter={item} key={item.id}/>
+                    }):""}
                 </div>
             </AbstractPage>
         );
@@ -69,8 +81,12 @@ class CatPage extends Component {
         axios.post("/api/cat/" + this.props.match.params.id + "/get").then(function (result) {
             if (result.data != null) {
                 self.setState({cat: result.data});
-                console.log(self.state.cat);
             }
+            else {
+                document.location.href="/404";
+            }
+        }).catch(()=>{
+            document.location.href="/404";
         });
     }
 }

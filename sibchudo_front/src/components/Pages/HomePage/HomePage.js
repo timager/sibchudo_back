@@ -3,6 +3,8 @@ import AbstractPage from "../AbstractPage/AbstractPage";
 import TitleH2 from "../../BaseElements/TitleH2/TitleH2";
 import './HomePage.css';
 import Button from "../../BaseElements/Button/Button";
+import CatSlider from "./CatSlider/CatSlider";
+
 
 class HomePage extends Component {
     render() {
@@ -22,7 +24,7 @@ class HomePage extends Component {
 
                 <div className={'flex'}>
                     <TitleH2 text={"О наших кошках"}/>
-                    <Button color={'green'}>Все кошки</Button>
+                    <Button color={'green'} href={"/cats"}>Все кошки</Button>
                 </div>
                 <div className={"block"}>
                     <div className={'cat_description'}>
@@ -30,20 +32,18 @@ class HomePage extends Component {
                         животные социализированы и отлично ладят с другими кошками. Наши
                         кошки снимаются в рекламе и приносят победы на выставках!
                     </div>
-                    <div className={'cat_slider'}>
-
-                    </div>
+                    {/*<CatSlider/>*/}
                 </div>
 
                 <div className={'flex'}>
                     <TitleH2 text={"Наши котята"}/>
-                    <Button color={'green'}>Все котята</Button>
+                    <Button color={'green'} href={"/kittens"}>Все котята</Button>
                 </div>
-                <div className={"block"}>123123123123123</div>
+                <div className={"block"}>
+                </div>
 
                 <TitleH2 text={"Наши достижения"}/>
                 <div className={"block"}>
-                    <div></div>
                 </div>
             </AbstractPage>
         );

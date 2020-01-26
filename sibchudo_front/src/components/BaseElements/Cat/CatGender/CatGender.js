@@ -11,7 +11,7 @@ class CatGender extends Component {
                 gender =  'кошка';
                 break;
         }
-        return <span>{gender}</span>
+        return <>{gender}</>
     }
 }
 

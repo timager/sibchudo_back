@@ -10,7 +10,7 @@ class TitleDescription extends Component {
                     <div>Коллективный питомник</div>
                     <div>сибирских кошек в Петербурге</div>
                     <div className={'register_description'}>Регистрация FIFE и WCF</div>
-                    <Button color={'white'}>Оставить заявку на котенка</Button>
+                    <Button href={"tel:+79213762867"} color={'white'}>Оставить заявку на котенка</Button>
                 </div>
             </div>
         );

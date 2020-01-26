@@ -9,3 +9,17 @@ body{
 .content{
     margin: 5% 20%;
 }
+
+.color_green{
+    color: #329b21;
+}
+
+.bg_green{
+    background-color: #329b21;
+}
+
+@media (max-width: 720px) {
+    .content {
+        margin: 5% 10%;
+    }
+}

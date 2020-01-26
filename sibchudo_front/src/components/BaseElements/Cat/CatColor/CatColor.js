@@ -2,7 +2,7 @@ import React, {Component} from "react";
 
 class CatColor extends Component {
     render() {
-        let colorCode = "Загрузка...";
+        let colorCode = "...";
         if (this.props.color) {
             let entries = [];
             for (let field in this.props.color) {
@@ -13,7 +13,7 @@ class CatColor extends Component {
             colorCode = entries.filter(field => field).map(field => field.code).join(".");
         }
         return (
-            <span>{colorCode}</span>
+            <>{colorCode}</>
         );
     }
 }
