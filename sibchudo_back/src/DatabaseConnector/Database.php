@@ -10,14 +10,18 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 class Database {
     private static Database $self;
     private static bool $init = false;
+    public const ADMIN = "";
+    public const USER = "user_";
     /**
      * @var resource|false $dbConnector
      */
     private $dbConnector;
+    private $role;
 
-    private static function init() {
+    public static function init($role) {
         self::$self = new Database();
-        $file = file_get_contents(__DIR__ . "/config/connection.json");
+        self::$self->role = $role;
+        $file = file_get_contents(__DIR__ . "/config/".$role."connection.json");
         $connection = json_decode($file, true);
         $password = $connection['password'];
         $user = $connection['user'];
@@ -28,9 +32,6 @@ class Database {
     }
 
     public static function getInstance(): Database {
-        if(!self::$init) {
-            self::init();
-        }
         return self::$self;
     }
 

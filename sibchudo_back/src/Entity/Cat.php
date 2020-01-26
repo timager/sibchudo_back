@@ -21,6 +21,23 @@ class Cat extends AbstractEntity {
     const OWN = "own";
     const OTHER = "other";
 
+    public static function GET_STATUSES () :array {
+        return [
+            ["value" => static::SALE, "name" => "Продается"],
+            ["value" => static::RESERVED, "name" => "Зарезервирован"],
+            ["value" => static::DEAD, "name" => "Мертв"],
+            ["value" => static::OWN, "name" => "Не продается"],
+            ["value" => static::OTHER, "name" => "Другой"],
+        ];
+    }
+
+    public static function GET_GENDERS () :array {
+        return [
+            ["value" => static::FEMALE, "name" => "Кошка"],
+            ["value" => static::MALE, "name" => "Кот"],
+        ];
+    }
+
     /**
      * @Field(name="id")
      */
@@ -55,7 +72,7 @@ class Cat extends AbstractEntity {
      * @Accessor(getter="getCommunity")
      * @Serializer\MaxDepth(1)
      */
-    private ?EntityInterface $community;
+    private ?EntityInterface $community = null;
 
     /**
      * @Field(name="gender")
@@ -67,28 +84,60 @@ class Cat extends AbstractEntity {
      * @Accessor(getter="getOwner")
      * @Serializer\MaxDepth(1)
      */
-    private ?EntityInterface $owner;
+    private ?EntityInterface $owner = null;
 
     /**
      * @Field(name="title", type="App\Entity\Title")
      * @Accessor(getter="getTitle")
      * @Serializer\MaxDepth(1)
      */
-    private ?EntityInterface $title;
+    private ?EntityInterface $title = null;
 
     /**
      * @Field(name="class", type="App\Entity\CatClass")
      * @Accessor(getter="getCatClass")
      * @Serializer\MaxDepth(1)
      */
-    private EntityInterface $catClass;
+    private ?EntityInterface $catClass = null;
 
     /**
      * @Field(name="avatar", type="App\Entity\Media")
      * @Accessor(getter="getAvatar")
      * @Serializer\MaxDepth(1)
      */
-    private EntityInterface $avatar;
+    private ?EntityInterface $avatar = null;
+
+    /**
+     * @Field(type="App\Entity\Media", invertedName="cat")
+     * @Accessor(getter="getMedias")
+     * @Serializer\MaxDepth(2)
+     */
+    private array $medias = [];
+
+    /**
+     * @Field(type="App\Entity\Litter", invertedName="mother")
+     * @Serializer\Exclude()
+     * @Serializer\MaxDepth(2)
+     */
+    private array $mLitters = [];
+
+
+    /**
+     * @Field(type="App\Entity\Litter", invertedName="father")
+     * @Accessor(getter="getLitters")
+     * @Serializer\SerializedName("litters")
+     * @Serializer\MaxDepth(4)
+     */
+    private array $fLitters = [];
+
+    /**
+     * @return array
+     */
+    public function getLitters(): array {
+        return array_merge($this->loadArray($this->mLitters), $this->loadArray($this->fLitters));
+    }
+
+
 
     /**
      * @return mixed
@@ -163,7 +212,7 @@ class Cat extends AbstractEntity {
     /**
      * @return EntityInterface|Owner
      */
-    public function getOwner(): Owner {
+    public function getOwner(): ?Owner {
         return $this->load($this->owner);
     }
 
@@ -175,10 +224,10 @@ class Cat extends AbstractEntity {
     }
 
     /**
-     * @return mixed
+     * @return EntityInterface|Title
      */
     public function getTitle() {
-        return $this->title;
+        return $this->load($this->title);
     }
 
     /**
@@ -189,10 +238,10 @@ class Cat extends AbstractEntity {
     }
 
     /**
-     * @return mixed
+     * @return CatClass|EntityInterface
      */
     public function getCatClass() {
-        return $this->catClass;
+        return $this->load($this->catClass);
     }
 
     /**
@@ -221,6 +270,13 @@ class Cat extends AbstractEntity {
      */
     public function getAvatar() {
         return $this->load($this->avatar);
+    }
+
+    /**
+     * @return array
+     */
+    public function getMedias() {
+        return $this->loadArray($this->medias);
     }
 
     /**

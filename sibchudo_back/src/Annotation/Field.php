@@ -3,6 +3,8 @@
 
 namespace App\Annotation;
 
+use App\Repository\RepositoryInterface;
+
 /**
  *
  * @Annotation
@@ -11,9 +13,9 @@ namespace App\Annotation;
  */
 class Field {
     private ?string $type = null;
-    private string $name;
-//    private bool $primary = false;
-//    private bool $isNull = false;
+    private ?string $name = null;
+    private ?string $invertedName = null;
+
 
     public function __construct(array $data) {
         foreach($data as $k => $v) {
@@ -21,21 +23,22 @@ class Field {
         }
     }
 
+    /**
+     * @return string
+     */
+    public function getInvertedName(): ?string {
+        return $this->invertedName;
+    }
+
+
+
     public function getType(): ?string {
         return $this->type;
     }
 
-    public function getName(): string {
+    public function getName(): ?string {
         return $this->name;
     }
-//
-//    public function getPrimary(): bool {
-//        return $this->primary;
-//    }
-//
-//    public function isNull(): bool {
-//        return $this->isNull;
-//    }
 
 
 }

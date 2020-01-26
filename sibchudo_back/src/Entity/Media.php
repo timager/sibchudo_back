@@ -6,6 +6,7 @@ namespace App\Entity;
 use App\Annotation\Field;
 use App\Annotation\Table;
 use DateTime;
+use JMS\Serializer\Annotation as Serializer;
 use JMS\Serializer\Annotation\Accessor;
 
 /**
@@ -31,11 +32,12 @@ class Media extends AbstractEntity {
     /**
      * @Field(name="description")
      */
-    private string $description;
+    private ?string $description = null;
 
     /**
      * @Field(name="cat", type="App\Entity\Cat")
      * @Accessor(getter="getCat")
+     * @Serializer\Exclude()
      */
     private EntityInterface $cat;
 

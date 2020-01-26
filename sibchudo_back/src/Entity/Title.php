@@ -9,7 +9,7 @@ use DateTime;
 
 /**
  * Class TestEntity
- * @Table(name="title",repository="App\Entity\TitleRepository")
+ * @Table(name="title",repository="App\Repository\TitleRepository")
  */
 class Title extends AbstractEntity
 {

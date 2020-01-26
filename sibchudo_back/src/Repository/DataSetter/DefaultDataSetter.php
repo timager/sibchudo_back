@@ -7,20 +7,24 @@ namespace App\Repository\DataSetter;
 use App\Annotation\Field;
 use App\Entity\EntityInterface;
 use App\Entity\LazyEntity;
+use App\Entity\LazyInvertedEntity;
 use Doctrine\Common\Annotations\Reader;
 use ReflectionClass;
+use DateTime;
 
 class DefaultDataSetter implements DataSetterInterface
 {
 
     protected $reader;
+    protected $role;
 
     /**
      * DefaultDataSetter constructor.
      * @param $reader
      */
-    public function __construct(Reader $reader)
+    public function __construct(Reader $reader, string $role)
     {
+        $this->role = $role;
         $this->reader = $reader;
     }
 
@@ -33,7 +37,7 @@ class DefaultDataSetter implements DataSetterInterface
             if($field !== null && array_key_exists($field->getName(), $data)){
                 $property->setAccessible(true);
                 if($field->getType() !== null && $data[$field->getName()] !== null){
-                    $lazy = new LazyEntity($data[$field->getName()], $field->getType(), $this->reader);
+                    $lazy = new LazyEntity($data[$field->getName()], $field->getType(), $this->reader, $this->role);
                     $property->setValue($entity, $lazy);
                 }else{
                     $type = $property->getType();
@@ -43,6 +47,10 @@ class DefaultDataSetter implements DataSetterInterface
                     else
                         $property->setValue($entity, $data[$field->getName()]);
                 }
+            }
+            if($field !== null && $field->getInvertedName() !== null && $field->getType() !== null){
+                $property->setAccessible(true);
+                $property->setValue($entity, [new LazyInvertedEntity($data['id'], $field->getInvertedName(), $field->getType(), $this->reader, $this->role)]);
             }
         }
         return $entity;
@@ -54,10 +62,17 @@ class DefaultDataSetter implements DataSetterInterface
         $reflectionsFields = $reflection->getProperties();
         foreach ($reflectionsFields as $property){
             $field = $this->reader->getPropertyAnnotation($property, Field::class);
-            if($field !== null){
+            if($field !== null && $field->getName() !== null){
                 $property->setAccessible(true);
                 if($field->getName()!=='id'){
-                    $data[$field->getName()] = $property->getValue($entity);
+                    $value = $property->getValue($entity);
+                    if($value instanceof EntityInterface){
+                        $data[$field->getName()] = $value->getId();
+                    }else if($value instanceof DateTime){
+                        $data[$field->getName()] = $value->format("Y-m-d H:i:s");
+                    }else{
+                        $data[$field->getName()] = $value;
+                    }
                 }
             }
         }

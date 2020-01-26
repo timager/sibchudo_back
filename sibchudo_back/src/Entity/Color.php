@@ -31,42 +31,42 @@ class Color extends AbstractEntity {
      * @Field(name="base_color_add", type="App\Entity\BaseColor")
      * @Accessor(getter="getBaseColorAdditional")
      */
-    private ?EntityInterface $baseColorAdditional;
+    private ?EntityInterface $baseColorAdditional = null;
     /**
      * @Field(name="code_0", type="App\Entity\ColorCode")
      * @Accessor(getter="getCode0")
      */
-    private ?EntityInterface $code0;
+    private ?EntityInterface $code0 = null;
     /**
      * @Field(name="code_1", type="App\Entity\ColorCode")
      * @Accessor(getter="getCode1")
      */
-    private ?EntityInterface $code1;
+    private ?EntityInterface $code1 = null;
     /**
      * @Field(name="code_2", type="App\Entity\ColorCode")
      * @Accessor(getter="getCode2")
      */
-    private ?EntityInterface $code2;
+    private ?EntityInterface $code2 = null;
     /**
      * @Field(name="code_3", type="App\Entity\ColorCode")
      * @Accessor(getter="getCode3")
      */
-    private ?EntityInterface $code3;
+    private ?EntityInterface $code3 = null;
     /**
      * @Field(name="tail", type="App\Entity\ColorCode")
      * @Accessor(getter="getTail")
      */
-    private ?EntityInterface $tail;
+    private ?EntityInterface $tail = null;
     /**
      * @Field(name="eyes", type="App\Entity\ColorCode")
      * @Accessor(getter="getEyes")
      */
-    private ?EntityInterface $eyes;
+    private ?EntityInterface $eyes = null;
     /**
      * @Field(name="ears", type="App\Entity\ColorCode")
      * @Accessor(getter="getEars")
      */
-    private ?EntityInterface $ears;
+    private ?EntityInterface $ears = null;
 
     /**
      * @return Breed|EntityInterface

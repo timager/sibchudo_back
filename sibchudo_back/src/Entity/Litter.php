@@ -6,6 +6,7 @@ namespace App\Entity;
 use App\Annotation\Field;
 use App\Annotation\Table;
 use DateTime;
+use JMS\Serializer\Annotation as Serializer;
 use JMS\Serializer\Annotation\Accessor;
 
 /**
@@ -18,14 +19,22 @@ class Litter extends AbstractEntity {
      * @Field(name="id")
      */
     private int $id;
+
     /**
-     * @Field(name="mather", type="App\Entity\Cat")
-     * @Accessor(getter="getMather")
+     * @Field(name="letter")
      */
-    private ?EntityInterface $mather;
+    private string $letter;
+
+    /**
+     * @Field(name="mother", type="App\Entity\Cat")
+     * @Accessor(getter="getMother")
+     * @Serializer\MaxDepth(3)
+     */
+    private ?EntityInterface $mother;
     /**
      * @Field(name="father", type="App\Entity\Cat")
      * @Accessor(getter="getFather")
+     * @Serializer\MaxDepth(3)
      */
     private ?EntityInterface $father;
     /**
@@ -36,21 +45,22 @@ class Litter extends AbstractEntity {
     /**
      * @Field(name="community", type="App\Entity\Community")
      * @Accessor(getter="getCommunity")
+     * @Serializer\MaxDepth(2)
      */
     private EntityInterface $community;
 
     /**
      * @return Cat|EntityInterface|null
      */
-    public function getMather(): ?Cat {
-        return $this->load($this->mather);
+    public function getMother(): ?Cat {
+        return $this->load($this->mother);
     }
 
     /**
-     * @param Cat $mather
+     * @param Cat $mother
      */
-    public function setMather(Cat $mather): void {
-        $this->mather = $mather;
+    public function setMother(Cat $mother): void {
+        $this->mother = $mother;
     }
 
     /**
@@ -94,6 +104,15 @@ class Litter extends AbstractEntity {
     public function setCommunity(EntityInterface $community): void {
         $this->community = $community;
     }
+
+    /**
+     * @return string
+     */
+    public function getLetter(): string {
+        return $this->letter;
+    }
+
+
 
 
     /**
