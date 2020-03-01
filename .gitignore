@@ -1,8 +1,19 @@
 *.lock
-config
-*.log
-node_modules
-/public/assets
-/public/js
-logs
-document_errors
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/.env
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+###> symfony/web-server-bundle ###
+/.web-server-pid
+###< symfony/web-server-bundle ###
+/bin/
+/src/Kernel.php
+/public/
+/config/
+/templates/
