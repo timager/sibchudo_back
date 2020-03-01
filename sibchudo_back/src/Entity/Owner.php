@@ -1,90 +1,174 @@
 <?php
 
-
 namespace App\Entity;
 
-use App\Annotation\Field;
-use App\Annotation\Table;
-use DateTime;
-use JMS\Serializer\Annotation\Accessor;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class TestEntity
- * @Table(name="owner",repository="App\Repository\OwnerRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\OwnerRepository")
  */
-class Owner extends AbstractEntity
+class Owner
 {
     /**
-     * @Field(name="id")
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
      */
-    private int $id;
+    private $id;
 
     /**
-     * @Field(name="name")
+     * @ORM\Column(type="string", length=255)
      */
-    private string $name;
+    private $name;
 
     /**
-     * @Field(name="contacts")
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private string $contacts;
+    private $description;
+    
 
     /**
-     * @Field(name="avatar", type="App\Entity\Media")
-     * @Accessor(getter="getAvatar")
+     * @ORM\OneToOne(targetEntity="App\Entity\Media", cascade={"persist", "remove"})
      */
-    private ?EntityInterface $avatar;
+    private $avatar;
 
     /**
-     * @return mixed
+     * @ORM\OneToMany(targetEntity="App\Entity\Community", mappedBy="leader")
      */
-    public function getName()
+    private $communities;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Contact")
+     */
+    private $contacts;
+
+    public function __construct()
+    {
+        $this->communities = new ArrayCollection();
+        $this->contacts = new ArrayCollection();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    /**
-     * @param mixed $name
-     */
-    public function setName($name): void
+    public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(?string $phone): self
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(?string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    public function getAvatar(): ?Media
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?Media $avatar): self
+    {
+        $this->avatar = $avatar;
+
+        return $this;
     }
 
     /**
-     * @return mixed
+     * @return Collection|Community[]
      */
-    public function getContacts()
+    public function getCommunities(): Collection
+    {
+        return $this->communities;
+    }
+
+    public function addCommunity(Community $community): self
+    {
+        if (!$this->communities->contains($community)) {
+            $this->communities[] = $community;
+            $community->setLeader($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommunity(Community $community): self
+    {
+        if ($this->communities->contains($community)) {
+            $this->communities->removeElement($community);
+            // set the owning side to null (unless already changed)
+            if ($community->getLeader() === $this) {
+                $community->setLeader(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Contact[]
+     */
+    public function getContacts(): Collection
     {
         return $this->contacts;
     }
 
-    /**
-     * @param mixed $contacts
-     */
-    public function setContacts($contacts): void
+    public function addContact(Contact $contact): self
     {
-        $this->contacts = $contacts;
+        if (!$this->contacts->contains($contact)) {
+            $this->contacts[] = $contact;
+        }
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getAvatar():?Media
+    public function removeContact(Contact $contact): self
     {
-        return $this->load($this->avatar);
-    }
+        if ($this->contacts->contains($contact)) {
+            $this->contacts->removeElement($contact);
+        }
 
-    /**
-     * @param Media|null $avatar
-     */
-    public function setAvatar(?Media $avatar): void
-    {
-        $this->avatar = $avatar;
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
+        return $this;
     }
 }

@@ -1,80 +1,74 @@
 <?php
 
-
 namespace App\Entity;
 
-use App\Annotation\Field;
-use App\Annotation\Table;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class BaseColor
- * @package App\Entity
- * @Table(name="base_color",repository="App\Repository\BaseColorRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\BaseColorRepository")
  */
-class BaseColor extends AbstractEntity{
+class BaseColor
+{
     /**
-     * @Field(name="id")
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
      */
-    private int $id;
-    /**
-     * @Field(name="code")
-     */
-    private ?string $code;
-    /**
-     * @Field(name="name")
-     */
-    private string $name;
-    /**
-     * @Field(name="name_ru")
-     */
-    private ?string $nameRu;
+    private $id;
 
     /**
-     * @return string
+     * @ORM\Column(type="string", length=1)
      */
-    public function getCode(): string {
+    private $code;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $name;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $nameRU;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getCode(): ?string
+    {
         return $this->code;
     }
 
-    /**
-     * @param string $code
-     */
-    public function setCode(string $code): void {
+    public function setCode(string $code): self
+    {
         $this->code = $code;
+
+        return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getName(): string {
+    public function getName(): ?string
+    {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     */
-    public function setName(string $name): void {
+    public function setName(string $name): self
+    {
         $this->name = $name;
+
+        return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getNameRu(): string {
-        return $this->nameRu;
+    public function getNameRU(): ?string
+    {
+        return $this->nameRU;
     }
 
-    /**
-     * @param string $nameRu
-     */
-    public function setNameRu(string $nameRu): void {
-        $this->nameRu = $nameRu;
-    }
+    public function setNameRU(string $nameRU): self
+    {
+        $this->nameRU = $nameRU;
 
-    /**
-     * @return int
-     */
-    public function getId(): int {
-        return $this->id;
+        return $this;
     }
 }

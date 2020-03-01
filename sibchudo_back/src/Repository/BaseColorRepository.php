@@ -2,16 +2,49 @@
 
 namespace App\Repository;
 
-
 use App\Entity\BaseColor;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
-class BaseColorRepository extends AbstractRepository
+/**
+ * @method BaseColor|null find($id, $lockMode = null, $lockVersion = null)
+ * @method BaseColor|null findOneBy(array $criteria, array $orderBy = null)
+ * @method BaseColor[]    findAll()
+ * @method BaseColor[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ */
+class BaseColorRepository extends ServiceEntityRepository
 {
-
-    private string $entity = BaseColor::class;
-
-    public function getEntityClass(): string
+    public function __construct(ManagerRegistry $registry)
     {
-        return $this->entity;
+        parent::__construct($registry, BaseColor::class);
     }
+
+    // /**
+    //  * @return BaseColor[] Returns an array of BaseColor objects
+    //  */
+    /*
+    public function findByExampleField($value)
+    {
+        return $this->createQueryBuilder('b')
+            ->andWhere('b.exampleField = :val')
+            ->setParameter('val', $value)
+            ->orderBy('b.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+    */
+
+    /*
+    public function findOneBySomeField($value): ?BaseColor
+    {
+        return $this->createQueryBuilder('b')
+            ->andWhere('b.exampleField = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+    */
 }

@@ -1,105 +1,91 @@
 <?php
 
-
 namespace App\Entity;
 
-use App\Annotation\Field;
-use App\Annotation\Table;
-use DateTime;
-use JMS\Serializer\Annotation as Serializer;
-use JMS\Serializer\Annotation\Accessor;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class TestEntity
- * @Table(name="media", repository="App\Repository\MediaRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\MediaRepository")
  */
-class Media extends AbstractEntity {
+class Media
+{
     /**
-     * @Field(name="id")
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
      */
-    private int $id;
+    private $id;
 
     /**
-     * @Field(name="destination")
+     * @ORM\Column(type="string", length=255)
      */
-    private string $destination;
+    private $destination;
 
     /**
-     * @Field(name="upload_date")
+     * @ORM\Column(type="datetime")
      */
-    private DateTime $uploadDate;
+    private $uploadDate;
 
     /**
-     * @Field(name="description")
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private ?string $description = null;
+    private $description;
 
     /**
-     * @Field(name="cat", type="App\Entity\Cat")
-     * @Accessor(getter="getCat")
-     * @Serializer\Exclude()
+     * @ORM\ManyToOne(targetEntity="App\Entity\Cat", inversedBy="media")
      */
-    private EntityInterface $cat;
+    private $cat;
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
-    /**
-     * @return mixed
-     */
-    public function getDestination() {
+    public function getDestination(): ?string
+    {
         return $this->destination;
     }
 
-    /**
-     * @param mixed $destination
-     */
-    public function setDestination($destination): void {
+    public function setDestination(string $destination): self
+    {
         $this->destination = $destination;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getUploadDate() {
+    public function getUploadDate(): ?\DateTimeInterface
+    {
         return $this->uploadDate;
     }
 
-    /**
-     * @param mixed $uploadDate
-     */
-    public function setUploadDate($uploadDate): void {
+    public function setUploadDate(\DateTimeInterface $uploadDate): self
+    {
         $this->uploadDate = $uploadDate;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getDescription() {
+    public function getDescription(): ?string
+    {
         return $this->description;
     }
 
-    /**
-     * @param mixed $description
-     */
-    public function setDescription($description): void {
+    public function setDescription(?string $description): self
+    {
         $this->description = $description;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getCat() {
-        return $this->load($this->cat);
+    public function getCat(): ?Cat
+    {
+        return $this->cat;
     }
 
-    /**
-     * @param mixed $cat
-     */
-    public function setCat($cat): void {
+    public function setCat(?Cat $cat): self
+    {
         $this->cat = $cat;
-    }
 
-
-    public function getId(): int {
-        return $this->id;
+        return $this;
     }
 }

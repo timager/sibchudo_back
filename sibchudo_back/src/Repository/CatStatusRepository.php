@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\CatClass;
+use App\Entity\CatStatus;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
- * @method CatClass|null find($id, $lockMode = null, $lockVersion = null)
- * @method CatClass|null findOneBy(array $criteria, array $orderBy = null)
- * @method CatClass[]    findAll()
- * @method CatClass[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method CatStatus|null find($id, $lockMode = null, $lockVersion = null)
+ * @method CatStatus|null findOneBy(array $criteria, array $orderBy = null)
+ * @method CatStatus[]    findAll()
+ * @method CatStatus[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class CatClassRepository extends ServiceEntityRepository
+class CatStatusRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, CatClass::class);
+        parent::__construct($registry, CatStatus::class);
     }
 
     // /**
-    //  * @return CatClass[] Returns an array of CatClass objects
+    //  * @return CatStatus[] Returns an array of CatStatus objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class CatClassRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?CatClass
+    public function findOneBySomeField($value): ?CatStatus
     {
         return $this->createQueryBuilder('c')
             ->andWhere('c.exampleField = :val')

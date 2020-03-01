@@ -2,16 +2,49 @@
 
 namespace App\Repository;
 
-
 use App\Entity\ColorCode;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
-class ColorCodeRepository extends AbstractRepository
+/**
+ * @method ColorCode|null find($id, $lockMode = null, $lockVersion = null)
+ * @method ColorCode|null findOneBy(array $criteria, array $orderBy = null)
+ * @method ColorCode[]    findAll()
+ * @method ColorCode[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ */
+class ColorCodeRepository extends ServiceEntityRepository
 {
-
-    private string $entity = ColorCode::class;
-
-    public function getEntityClass(): string
+    public function __construct(ManagerRegistry $registry)
     {
-        return $this->entity;
+        parent::__construct($registry, ColorCode::class);
     }
+
+    // /**
+    //  * @return ColorCode[] Returns an array of ColorCode objects
+    //  */
+    /*
+    public function findByExampleField($value)
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.exampleField = :val')
+            ->setParameter('val', $value)
+            ->orderBy('c.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+    */
+
+    /*
+    public function findOneBySomeField($value): ?ColorCode
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.exampleField = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+    */
 }

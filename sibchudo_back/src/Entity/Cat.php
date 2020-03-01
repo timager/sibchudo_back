@@ -1,293 +1,250 @@
 <?php
 
-
 namespace App\Entity;
 
-use App\Annotation\Field;
-use App\Annotation\Table;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
-use JMS\Serializer\Annotation\Accessor;
 
 /**
- * @Table(name="cat",repository="App\Repository\CatRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\CatRepository")
  */
-class Cat extends AbstractEntity {
-
-    const MALE = "male";
-    const FEMALE = "female";
-    const SALE = "sale";
-    const RESERVED = "reserved";
-    const DEAD = "dead";
-    const OWN = "own";
-    const OTHER = "other";
-
-    public static function GET_STATUSES () :array {
-        return [
-            ["value" => static::SALE, "name" => "Продается"],
-            ["value" => static::RESERVED, "name" => "Зарезервирован"],
-            ["value" => static::DEAD, "name" => "Мертв"],
-            ["value" => static::OWN, "name" => "Не продается"],
-            ["value" => static::OTHER, "name" => "Другой"],
-        ];
-    }
-
-    public static function GET_GENDERS () :array {
-        return [
-            ["value" => static::FEMALE, "name" => "Кошка"],
-            ["value" => static::MALE, "name" => "Кот"],
-        ];
-    }
-
+class Cat
+{
     /**
-     * @Field(name="id")
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
      */
-    private int $id;
+    private $id;
 
     /**
-     * @Field(name="name")
+     * @ORM\Column(type="string", length=255)
      */
-    private string $name;
+    private $name;
 
     /**
-     * @Field(name="color", type="App\Entity\Color")
-     * @Accessor(getter="getColor")
+     * @ORM\Column(type="string", length=6)
+     */
+    private $gender;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Media", mappedBy="cat")
+     * @Serializer\MaxDepth(2)
+     */
+    private $media;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Color", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
      * @Serializer\MaxDepth(4)
      */
-    private EntityInterface $color;
+    private $color;
 
     /**
-     * @Field(name="litter", type="App\Entity\Litter")
-     * @Accessor(getter="getLitter")
+     * @ORM\ManyToOne(targetEntity="App\Entity\CatClass")
+     * @Serializer\MaxDepth(1)
+     */
+    private $catClass;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Title")
+     * @Serializer\MaxDepth(1)
+     */
+    private $title;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Litter", inversedBy="cats")
+     * @ORM\JoinColumn(nullable=false)
      * @Serializer\MaxDepth(2)
      */
-    private EntityInterface $litter;
+    private $litter;
 
     /**
-     * @Field(name="status")
-     */
-    private string $status;
-
-    /**
-     * @Field(name="community", type="App\Entity\Community")
-     * @Accessor(getter="getCommunity")
+     * @ORM\OneToOne(targetEntity="App\Entity\Media", cascade={"persist", "remove"})
      * @Serializer\MaxDepth(1)
      */
-    private ?EntityInterface $community = null;
+    private $avatar;
 
     /**
-     * @Field(name="gender")
-     */
-    private string $gender;
-
-    /**
-     * @Field(name="owner", type="App\Entity\Owner")
-     * @Accessor(getter="getOwner")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Community")
      * @Serializer\MaxDepth(1)
      */
-    private ?EntityInterface $owner = null;
+    private $community;
 
     /**
-     * @Field(name="title", type="App\Entity\Title")
-     * @Accessor(getter="getTitle")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Owner")
      * @Serializer\MaxDepth(1)
      */
-    private ?EntityInterface $title = null;
+    private $owner;
 
     /**
-     * @Field(name="class", type="App\Entity\CatClass")
-     * @Accessor(getter="getCatClass")
+     * @ORM\ManyToOne(targetEntity="App\Entity\CatStatus")
      * @Serializer\MaxDepth(1)
      */
-    private ?EntityInterface $catClass = null;
-
-    /**
-     * @Field(name="avatar", type="App\Entity\Media")
-     * @Accessor(getter="getAvatar")
-     * @Serializer\MaxDepth(1)
-     */
-    private ?EntityInterface $avatar = null;
-
-    /**
-     * @Field(type="App\Entity\Media", invertedName="cat")
-     * @Accessor(getter="getMedias")
-     * @Serializer\MaxDepth(2)
-     */
-    private array $medias = [];
-
-    /**
-     * @Field(type="App\Entity\Litter", invertedName="mother")
-     * @Serializer\Exclude()
-     * @Serializer\MaxDepth(2)
-     */
-    private array $mLitters = [];
+    private $status;
 
 
-    /**
-     * @Field(type="App\Entity\Litter", invertedName="father")
-     * @Accessor(getter="getLitters")
-     * @Serializer\SerializedName("litters")
-     * @Serializer\MaxDepth(4)
-     */
-    private array $fLitters = [];
-
-    /**
-     * @return array
-     */
-    public function getLitters(): array {
-        return array_merge($this->loadArray($this->mLitters), $this->loadArray($this->fLitters));
+    public function __construct()
+    {
+        $this->media = new ArrayCollection();
     }
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
-
-    /**
-     * @return mixed
-     */
-    public function getName() {
+    public function getName(): ?string
+    {
         return $this->name;
     }
 
-    /**
-     * @param mixed $name
-     */
-    public function setName($name): void {
+    public function setName(string $name): self
+    {
         $this->name = $name;
+
+        return $this;
     }
 
-    /**
-     * @return Color|EntityInterface
-     */
-    public function getColor(): Color {
-        return $this->load($this->color);
-    }
-
-    /**
-     * @param Color $color
-     */
-    public function setColor(Color $color): void {
-        $this->color = $color;
-    }
-
-    /**
-     * @return EntityInterface|Litter
-     */
-    public function getLitter(): Litter {
-        return $this->load($this->litter);
-    }
-
-    /**
-     * @param $litter
-     */
-    public function setLitter($litter): void {
-        $this->litter = $litter;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getStatus() {
-        return $this->status;
-    }
-
-    /**
-     * @param mixed $status
-     */
-    public function setStatus($status): void {
-        $this->status = $status;
-    }
-
-    /**
-     * @return Community|EntityInterface
-     */
-    public function getCommunity(): ?Community {
-        return $this->load($this->community);
-    }
-
-    /**
-     * @param Community $community
-     */
-    public function setCommunity($community): void {
-        $this->community = $community;
-    }
-
-    /**
-     * @return EntityInterface|Owner
-     */
-    public function getOwner(): ?Owner {
-        return $this->load($this->owner);
-    }
-
-    /**
-     * @param Owner $owner
-     */
-    public function setOwner(Owner $owner): void {
-        $this->owner = $owner;
-    }
-
-    /**
-     * @return EntityInterface|Title
-     */
-    public function getTitle() {
-        return $this->load($this->title);
-    }
-
-    /**
-     * @param mixed $title
-     */
-    public function setTitle($title): void {
-        $this->title = $title;
-    }
-
-    /**
-     * @return CatClass|EntityInterface
-     */
-    public function getCatClass() {
-        return $this->load($this->catClass);
-    }
-
-    /**
-     * @param mixed $catClass
-     */
-    public function setCatClass($catClass): void {
-        $this->catClass = $catClass;
-    }
-
-    /**
-     * @return string
-     */
-    public function getGender(): string {
+    public function getGender(): ?string
+    {
         return $this->gender;
     }
 
-    /**
-     * @param string $gender
-     */
-    public function setGender(string $gender): void {
+    public function setGender(string $gender): self
+    {
         $this->gender = $gender;
+
+        return $this;
     }
 
     /**
-     * @return EntityInterface|Media|null
+     * @return Collection|Media[]
      */
-    public function getAvatar() {
-        return $this->load($this->avatar);
+    public function getMedia(): Collection
+    {
+        return $this->media;
     }
 
-    /**
-     * @return array
-     */
-    public function getMedias() {
-        return $this->loadArray($this->medias);
+    public function addMedia(Media $medium): self
+    {
+        if (!$this->media->contains($medium)) {
+            $this->media[] = $medium;
+            $medium->setCat($this);
+        }
+
+        return $this;
     }
 
-    /**
-     * @param Media|null $avatar
-     */
-    public function setAvatar(?Media $avatar): void {
+    public function removeMedia(Media $medium): self
+    {
+        if ($this->media->contains($medium)) {
+            $this->media->removeElement($medium);
+            // set the owning side to null (unless already changed)
+            if ($medium->getCat() === $this) {
+                $medium->setCat(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getColor(): ?Color
+    {
+        return $this->color;
+    }
+
+    public function setColor(Color $color): self
+    {
+        $this->color = $color;
+
+        return $this;
+    }
+
+    public function getCatClass(): ?CatClass
+    {
+        return $this->catClass;
+    }
+
+    public function setCatClass(?CatClass $catClass): self
+    {
+        $this->catClass = $catClass;
+
+        return $this;
+    }
+
+    public function getTitle(): ?Title
+    {
+        return $this->title;
+    }
+
+    public function setTitle(?Title $title): self
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    public function getLitter(): ?Litter
+    {
+        return $this->litter;
+    }
+
+    public function setLitter(?Litter $litter): self
+    {
+        $this->litter = $litter;
+
+        return $this;
+    }
+
+    public function getAvatar(): ?Media
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?Media $avatar): self
+    {
         $this->avatar = $avatar;
+
+        return $this;
     }
 
-
-    public function getId(): int {
-        return $this->id;
+    public function getCommunity(): ?Community
+    {
+        return $this->community;
     }
+
+    public function setCommunity(?Community $community): self
+    {
+        $this->community = $community;
+
+        return $this;
+    }
+
+    public function getOwner(): ?Owner
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?Owner $owner): self
+    {
+        $this->owner = $owner;
+
+        return $this;
+    }
+
+    public function getStatus(): ?CatStatus
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?CatStatus $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
 }

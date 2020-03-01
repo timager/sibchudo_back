@@ -1,125 +1,143 @@
 <?php
 
-
 namespace App\Entity;
 
-use App\Annotation\Field;
-use App\Annotation\Table;
-use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
-use JMS\Serializer\Annotation\Accessor;
 
 /**
- * Class Litter
- * @package App\Entity
- * @Table(name="litter",repository="App\Repository\LitterRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\LitterRepository")
  */
-class Litter extends AbstractEntity {
+class Litter {
     /**
-     * @Field(name="id")
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
      */
-    private int $id;
+    private $id;
 
     /**
-     * @Field(name="letter")
+     * @ORM\Column(type="string", length=1)
      */
-    private string $letter;
+    private $letter;
 
     /**
-     * @Field(name="mother", type="App\Entity\Cat")
-     * @Accessor(getter="getMother")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Cat")
      * @Serializer\MaxDepth(3)
      */
-    private ?EntityInterface $mother;
-    /**
-     * @Field(name="father", type="App\Entity\Cat")
-     * @Accessor(getter="getFather")
-     * @Serializer\MaxDepth(3)
-     */
-    private ?EntityInterface $father;
-    /**
-     * @Field(name="birthday")
-     */
-    private DateTime $birthday;
+    private $mother;
 
     /**
-     * @Field(name="community", type="App\Entity\Community")
-     * @Accessor(getter="getCommunity")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Cat")
+     * @Serializer\MaxDepth(3)
+     */
+    private $father;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $birthday;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Community", inversedBy="litters")
+     * @ORM\JoinColumn(nullable=false)
      * @Serializer\MaxDepth(2)
      */
-    private EntityInterface $community;
+    private $community;
 
     /**
-     * @return Cat|EntityInterface|null
+     * @ORM\OneToMany(targetEntity="App\Entity\Cat", mappedBy="litter", orphanRemoval=true)
+     * @Serializer\MaxDepth(3)
      */
-    public function getMother(): ?Cat {
-        return $this->load($this->mother);
+    private $cats;
+
+    public function __construct() {
+        $this->cats = new ArrayCollection();
     }
 
-    /**
-     * @param Cat $mother
-     */
-    public function setMother(Cat $mother): void {
-        $this->mother = $mother;
+
+    public function getId(): ?int {
+        return $this->id;
     }
 
-    /**
-     * @return Cat|EntityInterface|null
-     */
-    public function getFather(): ?Cat {
-        return $this->load($this->father);
-    }
-
-    /**
-     * @param Cat $father
-     */
-    public function setFather(Cat $father): void {
-        $this->father = $father;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getBirthday(): DateTime {
-        return $this->birthday;
-    }
-
-    /**
-     * @param DateTime $birthday
-     */
-    public function setBirthday(DateTime $birthday): void {
-        $this->birthday = $birthday;
-    }
-
-    /**
-     * @return Community|EntityInterface|null
-     */
-    public function getCommunity() {
-        return $this->load($this->community);
-    }
-
-    /**
-     * @param EntityInterface $community
-     */
-    public function setCommunity(EntityInterface $community): void {
-        $this->community = $community;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLetter(): string {
+    public function getLetter(): ?string {
         return $this->letter;
     }
 
+    public function setLetter(string $letter): self {
+        $this->letter = $letter;
 
+        return $this;
+    }
 
+    public function getMother(): ?Cat {
+        return $this->mother;
+    }
+
+    public function setMother(?Cat $mother): self {
+        $this->mother = $mother;
+
+        return $this;
+    }
+
+    public function getFather(): ?Cat {
+        return $this->father;
+    }
+
+    public function setFather(?Cat $father): self {
+        $this->father = $father;
+
+        return $this;
+    }
+
+    public function getBirthday(): ?\DateTimeInterface {
+        return $this->birthday;
+    }
+
+    public function setBirthday(\DateTimeInterface $birthday): self {
+        $this->birthday = $birthday;
+
+        return $this;
+    }
+
+    public function getCommunity(): ?Community {
+        return $this->community;
+    }
+
+    public function setCommunity(?Community $community): self {
+        $this->community = $community;
+
+        return $this;
+    }
 
     /**
-     * @return int
+     * @return Collection|Cat[]
      */
-    public function getId(): int {
-        return $this->id;
+    public function getCats(): Collection {
+        return $this->cats;
+    }
+
+    public function addCat(Cat $cat): self {
+        if (!$this->cats->contains($cat)) {
+            $this->cats[] = $cat;
+            $cat->setLitter($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCat(Cat $cat): self {
+        if ($this->cats->contains($cat)) {
+            $this->cats->removeElement($cat);
+            // set the owning side to null (unless already changed)
+            if ($cat->getLitter() === $this) {
+                $cat->setLitter(null);
+            }
+        }
+
+        return $this;
     }
 
 }

@@ -1,218 +1,195 @@
 <?php
 
-
 namespace App\Entity;
 
-use App\Annotation\Field;
-use App\Annotation\Table;
-use JMS\Serializer\Annotation\Accessor;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class Color
- * @package App\Entity
- * @Table(name="color",repository="App\Repository\ColorRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ColorRepository")
  */
-class Color extends AbstractEntity {
+class Color
+{
     /**
-     * @Field(name="id")
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
      */
-    private int $id;
-    /**
-     * @Field(name="breed", type="App\Entity\Breed")
-     * @Accessor(getter="getBreed")
-     */
-    private EntityInterface $breed;
-    /**
-     * @Field(name="base_color", type="App\Entity\BaseColor")
-     * @Accessor(getter="getBaseColor")
-     */
-    private EntityInterface $baseColor;
-    /**
-     * @Field(name="base_color_add", type="App\Entity\BaseColor")
-     * @Accessor(getter="getBaseColorAdditional")
-     */
-    private ?EntityInterface $baseColorAdditional = null;
-    /**
-     * @Field(name="code_0", type="App\Entity\ColorCode")
-     * @Accessor(getter="getCode0")
-     */
-    private ?EntityInterface $code0 = null;
-    /**
-     * @Field(name="code_1", type="App\Entity\ColorCode")
-     * @Accessor(getter="getCode1")
-     */
-    private ?EntityInterface $code1 = null;
-    /**
-     * @Field(name="code_2", type="App\Entity\ColorCode")
-     * @Accessor(getter="getCode2")
-     */
-    private ?EntityInterface $code2 = null;
-    /**
-     * @Field(name="code_3", type="App\Entity\ColorCode")
-     * @Accessor(getter="getCode3")
-     */
-    private ?EntityInterface $code3 = null;
-    /**
-     * @Field(name="tail", type="App\Entity\ColorCode")
-     * @Accessor(getter="getTail")
-     */
-    private ?EntityInterface $tail = null;
-    /**
-     * @Field(name="eyes", type="App\Entity\ColorCode")
-     * @Accessor(getter="getEyes")
-     */
-    private ?EntityInterface $eyes = null;
-    /**
-     * @Field(name="ears", type="App\Entity\ColorCode")
-     * @Accessor(getter="getEars")
-     */
-    private ?EntityInterface $ears = null;
+    private $id;
 
     /**
-     * @return Breed|EntityInterface
+     * @ORM\ManyToOne(targetEntity="App\Entity\Breed")
+     * @ORM\JoinColumn(nullable=false)
      */
-    public function getBreed(): Breed {
-        return $this->load($this->breed);
-    }
+    private $breed;
 
     /**
-     * @param Breed $breed
+     * @ORM\ManyToOne(targetEntity="App\Entity\BaseColor")
+     * @ORM\JoinColumn(nullable=false)
      */
-    public function setBreed(Breed $breed): void {
-        $this->breed = $breed;
-    }
+    private $baseColor;
 
     /**
-     * @return BaseColor|EntityInterface
+     * @ORM\ManyToOne(targetEntity="App\Entity\BaseColor")
      */
-    public function getBaseColor(): BaseColor {
-        return $this->load($this->baseColor);
-    }
+    private $baseColorAdditional;
 
     /**
-     * @param mixed $baseColor
+     * @ORM\ManyToOne(targetEntity="App\Entity\ColorCode")
      */
-    public function setBaseColor(BaseColor $baseColor): void {
-        $this->baseColor = $baseColor;
-    }
+    private $code0;
 
     /**
-     * @return BaseColor|EntityInterface
+     * @ORM\ManyToOne(targetEntity="App\Entity\ColorCode")
      */
-    public function getBaseColorAdditional(): ?BaseColor {
-        return $this->load($this->baseColorAdditional);
-    }
+    private $code1;
 
     /**
-     * @param BaseColor $baseColorAdditional
+     * @ORM\ManyToOne(targetEntity="App\Entity\ColorCode")
      */
-    public function setBaseColorAdditional(BaseColor $baseColorAdditional): void {
-        $this->baseColorAdditional = $baseColorAdditional;
-    }
+    private $code2;
 
     /**
-     * @return mixed
+     * @ORM\ManyToOne(targetEntity="App\Entity\ColorCode")
      */
-    public function getCode0() {
-        return $this->load($this->code0);
-    }
+    private $code3;
 
     /**
-     * @param mixed $code0
+     * @ORM\ManyToOne(targetEntity="App\Entity\ColorCode")
      */
-    public function setCode0($code0): void {
-        $this->code0 = $code0;
-    }
+    private $tail;
 
     /**
-     * @return mixed
+     * @ORM\ManyToOne(targetEntity="App\Entity\ColorCode")
      */
-    public function getCode1() {
-        return $this->load($this->code1);
-    }
+    private $eyes;
 
     /**
-     * @param mixed $code1
+     * @ORM\ManyToOne(targetEntity="App\Entity\ColorCode")
      */
-    public function setCode1($code1): void {
-        $this->code1 = $code1;
-    }
+    private $ears;
 
-    /**
-     * @return mixed
-     */
-    public function getCode2() {
-        return $this->load($this->code2);
-    }
-
-    /**
-     * @param mixed $code2
-     */
-    public function setCode2($code2): void {
-        $this->code2 = $code2;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCode3() {
-        return $this->load($this->code3);
-    }
-
-    /**
-     * @param mixed $code3
-     */
-    public function setCode3($code3): void {
-        $this->code3 = $code3;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getTail() {
-        return $this->load($this->tail);
-    }
-
-    /**
-     * @param mixed $tail
-     */
-    public function setTail($tail): void {
-        $this->tail = $tail;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getEyes() {
-        return $this->load($this->eyes);
-    }
-
-    /**
-     * @param mixed $eyes
-     */
-    public function setEyes($eyes): void {
-        $this->eyes = $eyes;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getEars() {
-        return $this->load($this->ears);
-    }
-
-    /**
-     * @param mixed $ears
-     */
-    public function setEars($ears): void {
-        $this->ears = $ears;
-    }
-
-    /**
-     * @return int
-     */
-    public function getId(): int {
+    public function getId(): ?int
+    {
         return $this->id;
     }
 
+    public function getBreed(): ?Breed
+    {
+        return $this->breed;
+    }
+
+    public function setBreed(?Breed $breed): self
+    {
+        $this->breed = $breed;
+
+        return $this;
+    }
+
+    public function getBaseColor(): ?BaseColor
+    {
+        return $this->baseColor;
+    }
+
+    public function setBaseColor(?BaseColor $baseColor): self
+    {
+        $this->baseColor = $baseColor;
+
+        return $this;
+    }
+
+    public function getBaseColorAdditional(): ?BaseColor
+    {
+        return $this->baseColorAdditional;
+    }
+
+    public function setBaseColorAdditional(?BaseColor $baseColorAdditional): self
+    {
+        $this->baseColorAdditional = $baseColorAdditional;
+
+        return $this;
+    }
+
+    public function getCode0(): ?ColorCode
+    {
+        return $this->code0;
+    }
+
+    public function setCode0(?ColorCode $code0): self
+    {
+        $this->code0 = $code0;
+
+        return $this;
+    }
+
+    public function getCode1(): ?ColorCode
+    {
+        return $this->code1;
+    }
+
+    public function setCode1(?ColorCode $code1): self
+    {
+        $this->code1 = $code1;
+
+        return $this;
+    }
+
+    public function getCode2(): ?ColorCode
+    {
+        return $this->code2;
+    }
+
+    public function setCode2(?ColorCode $code2): self
+    {
+        $this->code2 = $code2;
+
+        return $this;
+    }
+
+    public function getCode3(): ?ColorCode
+    {
+        return $this->code3;
+    }
+
+    public function setCode3(?ColorCode $code3): self
+    {
+        $this->code3 = $code3;
+
+        return $this;
+    }
+
+    public function getTail(): ?ColorCode
+    {
+        return $this->tail;
+    }
+
+    public function setTail(?ColorCode $tail): self
+    {
+        $this->tail = $tail;
+
+        return $this;
+    }
+
+    public function getEyes(): ?ColorCode
+    {
+        return $this->eyes;
+    }
+
+    public function setEyes(?ColorCode $eyes): self
+    {
+        $this->eyes = $eyes;
+
+        return $this;
+    }
+
+    public function getEars(): ?ColorCode
+    {
+        return $this->ears;
+    }
+
+    public function setEars(?ColorCode $ears): self
+    {
+        $this->ears = $ears;
+
+        return $this;
+    }
 }

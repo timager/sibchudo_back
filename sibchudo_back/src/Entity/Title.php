@@ -1,109 +1,91 @@
 <?php
 
-
 namespace App\Entity;
 
-use App\Annotation\Field;
-use App\Annotation\Table;
-use DateTime;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class TestEntity
- * @Table(name="title",repository="App\Repository\TitleRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\TitleRepository")
  */
-class Title extends AbstractEntity
+class Title
 {
     /**
-     * @Field(name="id")
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
      */
-    private int $id;
+    private $id;
 
     /**
-     * @Field(name="code")
+     * @ORM\Column(type="string", length=4)
      */
-    private string $code;
+    private $code;
 
     /**
-     * @Field(name="name")
+     * @ORM\Column(type="string", length=255)
      */
-    private string $name;
+    private $name;
 
     /**
-     * @Field(name="name_ru")
+     * @ORM\Column(type="string", length=255)
      */
-    private string $nameRu;
+    private $nameRU;
 
     /**
-     * @Field(name="description")
+     * @ORM\Column(type="text", nullable=true)
      */
-    private string $description;
+    private $description;
 
-    /**
-     * @return mixed
-     */
-    public function getCode()
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getCode(): ?string
     {
         return $this->code;
     }
 
-    /**
-     * @param mixed $code
-     */
-    public function setCode($code): void
+    public function setCode(string $code): self
     {
         $this->code = $code;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    /**
-     * @param mixed $name
-     */
-    public function setName($name): void
+    public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getNameRu()
+    public function getNameRU(): ?string
     {
-        return $this->nameRu;
+        return $this->nameRU;
     }
 
-    /**
-     * @param mixed $nameRu
-     */
-    public function setNameRu($nameRu): void
+    public function setNameRU(string $nameRU): self
     {
-        $this->nameRu = $nameRu;
+        $this->nameRU = $nameRU;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getDescription()
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    /**
-     * @param mixed $description
-     */
-    public function setDescription($description): void
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
-    }
 
-    public function getId(): int
-    {
-        return $this->id;
+        return $this;
     }
 }

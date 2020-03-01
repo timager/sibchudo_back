@@ -5,9 +5,9 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\CatClassRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\CatStatusRepository")
  */
-class CatClass
+class CatStatus
 {
     /**
      * @ORM\Id()
@@ -25,11 +25,6 @@ class CatClass
      * @ORM\Column(type="string", length=255)
      */
     private $nameRU;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $description;
 
     public function getId(): ?int
     {
@@ -56,18 +51,6 @@ class CatClass
     public function setNameRU(string $nameRU): self
     {
         $this->nameRU = $nameRU;
-
-        return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(?string $description): self
-    {
-        $this->description = $description;
 
         return $this;
     }

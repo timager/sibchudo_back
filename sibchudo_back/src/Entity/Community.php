@@ -1,125 +1,166 @@
 <?php
 
-
 namespace App\Entity;
 
-
-use App\Annotation\Field;
-use App\Annotation\Table;
-use JMS\Serializer\Annotation\Accessor;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class Community
- * @package App\Entity
- * @Table(name="community",repository="App\Repository\CommunityRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\CommunityRepository")
  */
-class Community extends AbstractEntity {
+class Community
+{
     /**
-     * @Field(name="id")
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
      */
-    private int $id;
+    private $id;
 
     /**
-     * @Field(name="name")
+     * @ORM\Column(type="string", length=255)
      */
-    private string $name;
+    private $name;
 
     /**
-     * @Field(name="description")
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private string $description;
+    private $description;
 
     /**
-     * @Field(name="address")
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private ?string $address;
+    private $address;
 
     /**
-     * @Field(name="contacts")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Owner", inversedBy="communities")
      */
-    private ?string $contacts;
+    private $leader;
 
     /**
-     * @Field(name="leader", type="App\Entity\Owner")
-     * @Accessor(getter="getLeader")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Contact")
      */
-    private ?EntityInterface $leader;
+    private $contacts;
 
     /**
-     * @return int
+     * @ORM\OneToMany(targetEntity="App\Entity\Litter", mappedBy="community", orphanRemoval=true)
      */
-    public function getId(): int {
+    private $litters;
+
+    public function __construct()
+    {
+        $this->contacts = new ArrayCollection();
+        $this->litters = new ArrayCollection();
+    }
+
+    public function getId(): ?int
+    {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
-    public function getName(): string {
+    public function getName(): ?string
+    {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     */
-    public function setName(string $name): void {
+    public function setName(string $name): self
+    {
         $this->name = $name;
+
+        return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getDescription(): string {
+    public function getDescription(): ?string
+    {
         return $this->description;
     }
 
-    /**
-     * @param string $description
-     */
-    public function setDescription(string $description): void {
+    public function setDescription(?string $description): self
+    {
         $this->description = $description;
+
+        return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getAddress(): ?string {
+    public function getAddress(): ?string
+    {
         return $this->address;
     }
 
-    /**
-     * @param string $address
-     */
-    public function setAddress(string $address): void {
+    public function setAddress(?string $address): self
+    {
         $this->address = $address;
+
+        return $this;
+    }
+
+    public function getLeader(): ?Owner
+    {
+        return $this->leader;
+    }
+
+    public function setLeader(?Owner $leader): self
+    {
+        $this->leader = $leader;
+
+        return $this;
     }
 
     /**
-     * @return string
+     * @return Collection|Contact[]
      */
-    public function getContacts(): ?string {
+    public function getContacts(): Collection
+    {
         return $this->contacts;
     }
 
-    /**
-     * @param string $contacts
-     */
-    public function setContacts(string $contacts): void {
-        $this->contacts = $contacts;
+    public function addContact(Contact $contact): self
+    {
+        if (!$this->contacts->contains($contact)) {
+            $this->contacts[] = $contact;
+        }
+
+        return $this;
+    }
+
+    public function removeContact(Contact $contact): self
+    {
+        if ($this->contacts->contains($contact)) {
+            $this->contacts->removeElement($contact);
+        }
+
+        return $this;
     }
 
     /**
-     * @return EntityInterface
+     * @return Collection|Litter[]
      */
-    public function getLeader(): ?EntityInterface {
-        return $this->load($this->leader);
+    public function getLitters(): Collection
+    {
+        return $this->litters;
     }
 
-    /**
-     * @param EntityInterface $leader
-     */
-    public function setLeader(EntityInterface $leader): void {
-        $this->leader = $leader;
+    public function addLitter(Litter $litter): self
+    {
+        if (!$this->litters->contains($litter)) {
+            $this->litters[] = $litter;
+            $litter->setCommunity($this);
+        }
+
+        return $this;
     }
 
+    public function removeLitter(Litter $litter): self
+    {
+        if ($this->litters->contains($litter)) {
+            $this->litters->removeElement($litter);
+            // set the owning side to null (unless already changed)
+            if ($litter->getCommunity() === $this) {
+                $litter->setCommunity(null);
+            }
+        }
+
+        return $this;
+    }
 }

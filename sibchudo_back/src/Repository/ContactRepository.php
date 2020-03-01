@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\CatClass;
+use App\Entity\Contact;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
- * @method CatClass|null find($id, $lockMode = null, $lockVersion = null)
- * @method CatClass|null findOneBy(array $criteria, array $orderBy = null)
- * @method CatClass[]    findAll()
- * @method CatClass[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Contact|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Contact|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Contact[]    findAll()
+ * @method Contact[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class CatClassRepository extends ServiceEntityRepository
+class ContactRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, CatClass::class);
+        parent::__construct($registry, Contact::class);
     }
 
     // /**
-    //  * @return CatClass[] Returns an array of CatClass objects
+    //  * @return Contact[] Returns an array of Contact objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class CatClassRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?CatClass
+    public function findOneBySomeField($value): ?Contact
     {
         return $this->createQueryBuilder('c')
             ->andWhere('c.exampleField = :val')
