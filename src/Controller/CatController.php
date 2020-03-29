@@ -22,7 +22,7 @@ class CatController extends AbstractController {
      */
     public function index() {
         return $this->json([
-            'message' => 'Welcome to your new controller!',
+            'message' => 'deploy test 1',
             'path' => 'src/Controller/CatController.php',
         ]);
     }
