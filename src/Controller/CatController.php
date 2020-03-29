@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CatController extends AbstractController {
     /**
-     * @Route("/cat", name="cat")
+     * @Route("/api/cat", name="cat")
      */
     public function index() {
         return $this->json([
