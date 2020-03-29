@@ -18,11 +18,11 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CatController extends AbstractController {
     /**
-     * @Route("/cat", name="cat")
+     * @Route("/api/cat", name="cat")
      */
     public function index() {
         return $this->json([
-            'message' => 'Welcome to your new controller!',
+            'message' => 'deploy test 1',
             'path' => 'src/Controller/CatController.php',
         ]);
     }
