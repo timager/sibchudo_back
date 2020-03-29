@@ -3,8 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Litter;
-use App\Repository\LitterRepository;
-use App\Service\RepositoryLoader;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerBuilder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
