@@ -45,10 +45,11 @@ class LitterController extends AbstractController {
 
     /**
      * @Route("/api/litter/{id}/get", name="api_get_litter_by_id", requirements={"id"="\d+"})
-     * @param Litter $litter
+     * @param int $id
      * @return JsonResponse
      */
-    public function getById(Litter $litter) {
+    public function getById(int $id) {
+        $litter = $this->getDoctrine()->getRepository(Litter::class)->find($id);
         $context = SerializationContext::create();
         $context->setSerializeNull(true);
         $context->enableMaxDepthChecks();

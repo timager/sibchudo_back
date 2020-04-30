@@ -17,15 +17,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CatController extends AbstractController {
-    /**
-     * @Route("/api/cat", name="cat")
-     */
-    public function index() {
-        return $this->json([
-            'message' => 'deploy test 2',
-            'path' => 'src/Controller/CatController.php',
-        ]);
-    }
 
     /**
      * @Route("/api/cat/get", name="api_cat_get")
@@ -113,13 +104,13 @@ class CatController extends AbstractController {
      */
     public function loadImage(Request $request, Cat $cat, AvatarLoader $loader) {
         $files = $request->files->all();
-        if (count($files) != 1) {
+        if(count($files) != 1) {
             return new Response("", 400);
         }
         $name = $loader->upload($files['avatar']);
-        if ($name != null) {
-            if ($cat->getAvatar() !== null) {
-                if (substr($cat->getAvatar()->getDestination(), 0, 1) === "/") {
+        if($name != null) {
+            if($cat->getAvatar() !== null) {
+                if(substr($cat->getAvatar()->getDestination(), 0, 1) === "/") {
                     $loader->delete($cat->getAvatar()->getDestination());
                 }
                 $this->getDoctrine()->getManager()->remove($cat->getAvatar());
