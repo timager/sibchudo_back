@@ -3,11 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Cat;
-use App\Entity\Color;
+use App\Entity\CatStatus;
 use App\Entity\Media;
 use App\Service\AvatarLoader;
 use DateTime;
-use Exception;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerBuilder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -39,10 +38,9 @@ class CatController extends AbstractController {
 
     /**
      * @Route("/api/cat/genders/get", name="api_cat_genders_get")
-     * @param Request $request
      * @return JsonResponse
      */
-    public function getGenders(Request $request) {
+    public function getGenders() {
         return new JsonResponse([
             ["value" => 'female', "name" => "Кошка"],
             ["value" => 'male', "name" => "Кот"],
@@ -54,8 +52,12 @@ class CatController extends AbstractController {
      * @return JsonResponse
      */
     public function getStatuses() {
-        $statuses = $this->getDoctrine()->getRepository(Cat::class)->findAll();
-        return new JsonResponse($statuses, 200, [], true);
+        $statuses = $this->getDoctrine()->getRepository(CatStatus::class)->findAll();
+        $context = SerializationContext::create();
+        $context->setSerializeNull(true);
+        $context->enableMaxDepthChecks();
+        $json = SerializerBuilder::create()->build()->serialize($statuses, 'json', $context);
+        return new JsonResponse($json, 200, [], true);
     }
 
     /**
