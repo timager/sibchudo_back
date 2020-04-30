@@ -72,10 +72,11 @@ class CatController extends AbstractController {
 
     /**
      * @Route("/api/cat/{id}/get", name="api_get_cat_by_id", requirements={"id"="\d+"})
-     * @param Cat $cat
+     * @param int $id
      * @return JsonResponse
      */
-    public function getById(Cat $cat) {
+    public function getById(int $id) {
+        $cat = $this->getDoctrine()->getRepository(Cat::class)->find($id);
         $context = SerializationContext::create();
         $context->setSerializeNull(true);
         $context->enableMaxDepthChecks();
@@ -85,10 +86,11 @@ class CatController extends AbstractController {
 
     /**
      * @Route("/api/cat/{id}/delete",name="api_delete_cat_by_id")
-     * @param Cat $cat
+     * @param int $id
      * @return JsonResponse
      */
-    public function deleteById(Cat $cat) {
+    public function deleteById(int $id) {
+        $cat = $this->getDoctrine()->getRepository(Cat::class)->find($id);
         $this->getDoctrine()->getManager()->remove($cat);
         $this->getDoctrine()->getManager()->flush();
         return new JsonResponse();
@@ -97,18 +99,21 @@ class CatController extends AbstractController {
     /**
      * @Route("/api/cat/{id}/avatar", name="cat_load_avatar")
      * @param Request $request
-     * @param Cat $cat
+     * @param int $id
      * @param AvatarLoader $loader
      * @return Response
-     * @throws Exception
      */
-    public function loadImage(Request $request, Cat $cat, AvatarLoader $loader) {
+    public function loadImage(Request $request, int $id, AvatarLoader $loader) {
         $files = $request->files->all();
         if(count($files) != 1) {
             return new Response("", 400);
         }
         $name = $loader->upload($files['avatar']);
         if($name != null) {
+            /**
+             * @var Cat $cat
+             */
+            $cat = $this->getDoctrine()->getRepository(Cat::class)->find($id);
             if($cat->getAvatar() !== null) {
                 if(substr($cat->getAvatar()->getDestination(), 0, 1) === "/") {
                     $loader->delete($cat->getAvatar()->getDestination());
