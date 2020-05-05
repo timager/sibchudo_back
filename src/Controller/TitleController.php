@@ -3,8 +3,6 @@
 
 namespace App\Controller;
 
-
-use App\Entity\Owner;
 use App\Entity\Title;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerBuilder;

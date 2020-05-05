@@ -3,11 +3,9 @@
 
 namespace App\Controller;
 
-
 use App\Entity\BaseColor;
 use App\Entity\Breed;
 use App\Entity\ColorCode;
-use App\Entity\Owner;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerBuilder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

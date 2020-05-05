@@ -3,9 +3,7 @@
 
 namespace App\Controller;
 
-
 use App\Entity\CatClass;
-use App\Entity\Owner;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerBuilder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
