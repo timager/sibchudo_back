@@ -13,7 +13,7 @@
 /.web-server-pid
 ###< symfony/web-server-bundle ###
 /bin/
-/src/Kernel.php
 /public/
+!/public/index.php
 /templates/
 /.idea/
