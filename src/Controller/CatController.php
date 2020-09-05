@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Cat;
 use App\Entity\CatStatus;
 use App\Entity\Media;
+use App\Form\CatType;
 use App\Service\AvatarLoader;
 use DateTime;
 use JMS\Serializer\SerializationContext;
@@ -15,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class CatController extends AbstractController {
+class CatController extends RestFormController {
 
     /**
      * @Route("/api/cat", methods={"GET"})
@@ -150,22 +151,19 @@ class CatController extends AbstractController {
 //        return new JsonResponse();
 //    }
 
-//    /**
-//     * @Route("/api/cat/create")
-//     * @param Request $request
-//     * @return Response
-//     */
-//    public function create(Request $request) {
-//        $em = $this->getDoctrine()->getManager();
-//        $post = json_decode($request->getContent(), true);
-//        $color = $this->makeColor(new Color(), $post['color']);
-//        $em->persist($color);
-//        $cat = new Cat();
-//        $cat->setColor($color);
-//        $cat = $this->makeCat($cat, $post);
-//        $em->persist($cat);
-//        return new JsonResponse();
-//    }
+    /**
+     * @Route("/api/cat", methods={"POST"})
+     * @param Request $request
+     * @return Response
+     */
+    public function create(Request $request) {
+        $em = $this->getDoctrine()->getManager();
+        $cat = new Cat();
+        $cat = $this->useForm(CatType::class, $cat);
+        $em->persist($cat);
+//        $em->flush();
+        return $this->makeJsonResponse($cat);
+    }
 
 //    public function makeCat(Cat $cat, $post) {
 //        if (isset($post['title'])) {

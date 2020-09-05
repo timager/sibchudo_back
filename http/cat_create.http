@@ -1,0 +1,12 @@
+POST http://sibchudo.local/api/cat
+Content-Type: application/json
+
+{
+  "name": "Котик",
+  "gender": "female",
+  "color": {
+
+  }
+}
+
+###
