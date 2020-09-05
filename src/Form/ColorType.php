@@ -2,33 +2,33 @@
 
 namespace App\Form;
 
-use App\Entity\Cat;
+use App\Entity\Color;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CatType extends AbstractType
+class ColorType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('gender')
-            ->add('color', ColorType::class)
-            ->add('catClass')
-            ->add('title')
-            ->add('litter')
-            ->add('community')
-            ->add('owner')
-            ->add('status')
+            ->add('breed')
+            ->add('baseColor')
+            ->add('baseColorAdditional')
+            ->add('code0')
+            ->add('code1')
+            ->add('code2')
+            ->add('code3')
+            ->add('tail')
+            ->add('eyes')
+            ->add('ears')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Cat::class,
-            'csrf_protection' => false
+            'data_class' => Color::class,
         ]);
     }
 }

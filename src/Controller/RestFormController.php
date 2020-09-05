@@ -10,7 +10,7 @@ abstract class RestFormController extends RestController
     protected function useForm(string $type, object $entity, array $advancedData = [], array $options = []){
         $data = $this->getRequestJSON();
         $form = $this->createForm($type, $entity, $options);
-        $form->submit(array_merge($data, $advancedData), true);
+        $form->submit(array_merge($data, $advancedData), false);
         if($form->isValid()){
             return $form->getData();
         }else{

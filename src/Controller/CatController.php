@@ -10,7 +10,6 @@ use App\Service\AvatarLoader;
 use DateTime;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerBuilder;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,17 +23,15 @@ class CatController extends RestFormController {
      * @return JsonResponse
      */
     public function getBy(Request $request) {
-        $post = json_decode($request->getContent(), true);
-        $criteria = $post['criteria'] ?? [];
-        $limit = $post['limit'] ?? null;
-        $offset = $post['offset'] ?? null;
-        $order = $post['order'] ?? null;
+        $data = $this->getRequestQueryParams();
+        $criteria = $data['criteria'] ?? "[]";
+        $criteria = json_decode($criteria, true);
+        $limit = $data['limit'] ?? null;
+        $offset = $data['offset'] ?? null;
+        $order = $data['order'] ?? "[]";
+        $order = json_decode($order, true);
         $cats = $this->getDoctrine()->getRepository(Cat::class)->findBy($criteria, $order, $limit, $offset);
-        $context = SerializationContext::create();
-        $context->setSerializeNull(true);
-        $context->enableMaxDepthChecks();
-        $json = SerializerBuilder::create()->build()->serialize($cats, 'json', $context);
-        return new JsonResponse($json, 200, [], true);
+        return $this->makeJsonResponse($cats);
     }
 
     /**
@@ -67,8 +64,9 @@ class CatController extends RestFormController {
      * @return JsonResponse
      */
     public function getCount(Request $request) {
-        $post = json_decode($request->getContent(), true);
-        $criteria = $post['criteria'] ?? [];
+        $data = $this->getRequestQueryParams();
+        $criteria = $data['criteria'] ?? "[]";
+        $criteria = json_decode($criteria);
         $cats = $this->getDoctrine()->getRepository(Cat::class)->findBy($criteria);
         return new JsonResponse(count($cats));
     }
@@ -138,18 +136,6 @@ class CatController extends RestFormController {
         return new Response("Ошибка загрузки", 500);
     }
 
-//    /**
-//     * @Route("/api/cat/{id}/edit")
-//     * @param Request $request
-//     * @param Cat $cat
-//     * @return Response
-//     */
-//    public function edit(Request $request, Cat $cat) {
-//        $post = json_decode($request->getContent(), true);
-//        $this->getDoctrine()->getManager()->persist($this->makeColor($cat->getColor(), $post['color']));
-//        $this->getDoctrine()->getManager()->persist($this->makeCat($cat, $post));
-//        return new JsonResponse();
-//    }
 
     /**
      * @Route("/api/cat", methods={"POST"})
@@ -159,91 +145,25 @@ class CatController extends RestFormController {
     public function create(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $cat = new Cat();
-        $cat = $this->useForm(CatType::class, $cat);
+        $this->useForm(CatType::class, $cat);
         $em->persist($cat);
-//        $em->flush();
+        $em->flush();
         return $this->makeJsonResponse($cat);
     }
 
-//    public function makeCat(Cat $cat, $post) {
-//        if (isset($post['title'])) {
-//            $title = $loader->loadRepository(TitleRepository::class)->getById($post['title']);
-//            $cat->setTitle($title);
-//        }
-//        $cat->setName($post['name']);
-//        if (isset($post['litter'])) {
-//            $litter = $loader->loadRepository(LitterRepository::class)->getById($post['litter']);
-//            $cat->setLitter($litter);
-//        }
-//        $cat->setStatus($post['status']);
-//        if (isset($post['community'])) {
-//            $community = $loader->loadRepository(CommunityRepository::class)->getById($post['community']);
-//            $cat->setCommunity($community);
-//        }
-//        $cat->setGender($post['gender']);
-//        if (isset($post['owner'])) {
-//            $owner = $loader->loadRepository(OwnerRepository::class)->getById($post['owner']);
-//            $cat->setOwner($owner);
-//        }
-//        if (isset($post['cat_class'])) {
-//            $class = $loader->loadRepository(CatClassRepository::class)->getById($post['cat_class']);
-//            $cat->setCatClass($class);
-//        }
-//        return $cat;
-//    }
-//
-//    public function makeColor(Color $color, $data) {
-//        if (isset($data['base_color'])) {
-//            $entity = $loader->loadRepository(BaseColorRepository::class)->getById($data['base_color']);
-//            $color->setBaseColor($entity);
-//        }
-//        if (isset($data['breed'])) {
-//            $entity = $loader->loadRepository(BreedRepository::class)->getById($data['breed']);
-//            $color->setBreed($entity);
-//        }
-//        if (isset($data['base_color_additional'])) {
-//            $entity = $loader->loadRepository(BaseColorRepository::class)->getById($data['base_color_additional']);
-//            $color->setBaseColorAdditional($entity);
-//        }
-//
-//        if (isset($data['ears'])) {
-//            $entity = $loader->loadRepository(ColorCodeRepository::class)->getById($data['ears']);
-//            $color->setEars($entity);
-//        }
-//
-//        if (isset($data['code0'])) {
-//            $entity = $loader->loadRepository(ColorCodeRepository::class)->getById($data['code0']);
-//            $color->setCode0($entity);
-//        }
-//
-//        if (isset($data['code1'])) {
-//            $entity = $loader->loadRepository(ColorCodeRepository::class)->getById($data['code1']);
-//            $color->setCode1($entity);
-//        }
-//
-//        if (isset($data['code2'])) {
-//            $entity = $loader->loadRepository(ColorCodeRepository::class)->getById($data['code2']);
-//            $color->setCode2($entity);
-//        }
-//
-//        if (isset($data['code3'])) {
-//            $entity = $loader->loadRepository(ColorCodeRepository::class)->getById($data['code3']);
-//            $color->setCode3($entity);
-//        }
-//
-//        if (isset($data['tail'])) {
-//            $entity = $loader->loadRepository(ColorCodeRepository::class)->getById($data['tail']);
-//            $color->setTail($entity);
-//        }
-//
-//        if (isset($data['eyes'])) {
-//            $entity = $loader->loadRepository(ColorCodeRepository::class)->getById($data['eyes']);
-//            $color->setEyes($entity);
-//        }
-//
-//        return $color;
-//
-//    }
-
+    /**
+     * @Route("/api/cat/{id}", methods={"PUT"})
+     * @param  Request  $request
+     * @param  Cat      $cat
+     *
+     * @return Response
+     */
+    public function edit(Request $request, Cat $cat) {
+        $em = $this->getDoctrine()->getManager();
+        $this->useForm(CatType::class, $cat);
+        $em->persist($cat);
+        $em->flush();
+        return $this->makeJsonResponse($cat);
+    }
 
 }

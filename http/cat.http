@@ -1,0 +1,57 @@
+GET http://sibchudo.local/api/cat?criteria={"gender":"female"}
+Accept: application/json
+
+###
+POST http://sibchudo.local/api/cat
+Content-Type: application/json
+
+{
+  "name": "Котик",
+  "gender": "female",
+  "color": {
+    "breed": 1,
+    "baseColor": 1,
+    "baseColorAdditional": 1,
+    "code0": 1,
+    "code1": 1,
+    "code2": 1,
+    "code3": 1,
+    "tail": 1,
+    "eyes": 1,
+    "ears": 1
+  },
+  "catClass": 1,
+  "title": 1,
+  "litter": 1,
+  "community": 1,
+  "owner": 1,
+  "status": 1
+}
+
+###
+
+PUT http://sibchudo.local/api/cat/1
+Content-Type: application/json
+
+{
+  "name": "КотикEdit",
+  "gender": "male",
+  "color": {
+    "breed": 1,
+    "baseColor": 1,
+    "baseColorAdditional": 1,
+    "code0": 1,
+    "code1": 1,
+    "code2": 1,
+    "code3": 1,
+    "tail": 1,
+    "eyes": 1,
+    "ears": null
+  },
+  "catClass": 1,
+  "title": 1,
+  "litter": 1,
+  "community": 1,
+  "owner": 1,
+  "status": 1
+}

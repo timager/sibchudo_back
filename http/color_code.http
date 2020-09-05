@@ -1,0 +1,8 @@
+GET http://sibchudo.local/api/color_code?custom={"firstNumber":1}
+Accept: application/json
+
+###
+GET http://sibchudo.local/api/color_code
+Accept: application/json
+
+###
