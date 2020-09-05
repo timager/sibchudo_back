@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TitleController extends AbstractController {
     /**
-     * @Route("/api/title/get")
+     * @Route("/api/title", methods={"GET"})
      * @param Request $request
      * @return JsonResponse
      */

@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CommunityController extends AbstractController {
 
     /**
-     * @Route("/api/community/get")
+     * @Route("/api/community", methods={"GET"})
      * @param Request $request
      * @return JsonResponse
      */

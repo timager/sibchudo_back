@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CatController extends AbstractController {
 
     /**
-     * @Route("/api/cat/get", name="api_cat_get")
+     * @Route("/api/cat", methods={"GET"})
      * @param Request $request
      * @return JsonResponse
      */
@@ -37,7 +37,7 @@ class CatController extends AbstractController {
     }
 
     /**
-     * @Route("/api/cat/genders/get", name="api_cat_genders_get")
+     * @Route("/api/cat/genders", methods={"GET"})
      * @return JsonResponse
      */
     public function getGenders() {
@@ -48,7 +48,7 @@ class CatController extends AbstractController {
     }
 
     /**
-     * @Route("/api/cat/statuses/get", name="api_cat_statuses_get")
+     * @Route("/api/cat/statuses", methods={"GET"})
      * @return JsonResponse
      */
     public function getStatuses() {
@@ -61,7 +61,7 @@ class CatController extends AbstractController {
     }
 
     /**
-     * @Route("/api/cat/count", name="api_cat_count")
+     * @Route("/api/cat/count", methods={"GET"})
      * @param Request $request
      * @return JsonResponse
      */
@@ -73,7 +73,7 @@ class CatController extends AbstractController {
     }
 
     /**
-     * @Route("/api/cat/{id}/get", name="api_get_cat_by_id", requirements={"id"="\d+"})
+     * @Route("/api/cat/{id}", requirements={"id"="\d+"}, methods={"GET"})
      * @param int $id
      * @return JsonResponse
      */
@@ -87,7 +87,7 @@ class CatController extends AbstractController {
     }
 
     /**
-     * @Route("/api/cat/{id}/delete",name="api_delete_cat_by_id")
+     * @Route("/api/cat/{id}", methods={"DELETE"})
      * @param int $id
      * @return JsonResponse
      */
@@ -99,11 +99,12 @@ class CatController extends AbstractController {
     }
 
     /**
-     * @Route("/api/cat/{id}/avatar", name="cat_load_avatar")
+     * @Route("/api/cat/{id}/avatar", methods={"POST"})
      * @param Request $request
      * @param int $id
      * @param AvatarLoader $loader
      * @return Response
+     * @throws \Exception
      */
     public function loadImage(Request $request, int $id, AvatarLoader $loader) {
         $files = $request->files->all();

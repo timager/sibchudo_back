@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class OwnerController extends AbstractController {
     /**
-     * @Route("/api/owner/get")
+     * @Route("/api/owner", methods={"GET"})
      * @param Request $request
      * @return JsonResponse
      */

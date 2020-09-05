@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ColorController extends AbstractController {
     /**
-     * @Route("/api/base_color/get")
+     * @Route("/api/base_color", methods={"GET"})
      * @param Request $request
      * @return JsonResponse
      */
@@ -29,7 +29,7 @@ class ColorController extends AbstractController {
     }
 
     /**
-     * @Route("/api/breed/get")
+     * @Route("/api/breed", methods={"GET"})
      * @param Request $request
      * @return JsonResponse
      */
@@ -43,7 +43,7 @@ class ColorController extends AbstractController {
     }
 
     /**
-     * @Route("/api/color_code/get")
+     * @Route("/api/color_code", methods={"GET"})
      * @param Request $request
      * @return JsonResponse
      */

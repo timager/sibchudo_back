@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CatClassController extends AbstractController {
     /**
-     * @Route("/api/class/get")
+     * @Route("/api/class", methods={"GET"})
      * @param Request $request
      * @return JsonResponse
      */

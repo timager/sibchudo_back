@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class LitterController extends AbstractController {
 
     /**
-     * @Route("/api/litter/get", name="api_litter_get")
+     * @Route("/api/litter", methods={"GET"})
      * @param Request $request
      * @return JsonResponse
      */
@@ -32,7 +32,7 @@ class LitterController extends AbstractController {
     }
 
     /**
-     * @Route("/api/litter/count", name="api_litter_count")
+     * @Route("/api/litter/count", methods={"GET"})
      * @param Request $request
      * @return JsonResponse
      */
@@ -44,7 +44,7 @@ class LitterController extends AbstractController {
     }
 
     /**
-     * @Route("/api/litter/{id}/get", name="api_get_litter_by_id", requirements={"id"="\d+"})
+     * @Route("/api/litter/{id}", requirements={"id"="\d+"}, methods={"GET"})
      * @param int $id
      * @return JsonResponse
      */
