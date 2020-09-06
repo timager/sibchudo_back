@@ -38,7 +38,7 @@ class Media
     private $cat;
 
 
-    private ?string $dir;
+    private ?string $dir = null;
 
     /**
      * Media constructor.
