@@ -24,7 +24,7 @@ class Litter {
     private $letter;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Cat"}})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Cat")
      * @ORM\JoinColumn(onDelete="SET NULL")
      * @Serializer\MaxDepth(3)
      */
