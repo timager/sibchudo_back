@@ -28,7 +28,8 @@ class CatType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Cat::class,
-            'csrf_protection' => false
+            'csrf_protection' => false,
+            'allow_extra_fields' => true
         ]);
     }
 }

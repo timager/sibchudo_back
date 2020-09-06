@@ -29,6 +29,7 @@ class ColorType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Color::class,
+            'allow_extra_fields' => true
         ]);
     }
 }
