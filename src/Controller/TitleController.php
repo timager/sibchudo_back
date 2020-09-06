@@ -11,18 +11,14 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class TitleController extends AbstractController {
+class TitleController extends RestController {
     /**
      * @Route("/api/title", methods={"GET"})
      * @param Request $request
      * @return JsonResponse
      */
     public function getTitles(Request $request) {
-        $statuses = $this->getDoctrine()->getRepository(Title::class)->findAll();
-        $context = SerializationContext::create();
-        $context->setSerializeNull(true);
-        $context->enableMaxDepthChecks();
-        $json = SerializerBuilder::create()->build()->serialize($statuses, 'json', $context);
-        return new JsonResponse($json, 200, [], true);
+        $titles = $this->getDoctrine()->getRepository(Title::class)->findAll();
+        return $this->makeJsonResponse($titles);
     }
 }
