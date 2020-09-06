@@ -32,9 +32,17 @@ services:
             $targetDir: '%avatar_directory%'
 
     App\EventListener\ImageDeleteListener:
-
         tags:
             - name: 'doctrine.event_listener'
               event: 'postRemove'
+              priority: 500
+              connection: 'default'
+
+    App\EventListener\PostLoadEventListener:
+        arguments:
+            $imagesDirectory: '%avatar_web%'
+        tags:
+            - name: 'doctrine.event_listener'
+              event: 'postLoad'
               priority: 500
               connection: 'default'

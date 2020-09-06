@@ -37,6 +37,9 @@ class Media
      */
     private $cat;
 
+
+    private string $dir;
+
     /**
      * Media constructor.
      */
@@ -90,5 +93,10 @@ class Media
         $this->cat = $cat;
 
         return $this;
+    }
+
+    public function setDir(string $dir)
+    {
+        $this->dir = $dir;
     }
 }
