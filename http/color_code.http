@@ -1,4 +1,4 @@
-GET http://sibchudo.local/api/color_code?custom={"firstNumber":1}
+GET http://sibchudo.local/api/color_code?custom={"firstNumber":"0"}
 Accept: application/json
 
 ###

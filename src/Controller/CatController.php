@@ -3,13 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Cat;
+use App\Entity\User;
 use App\Entity\CatStatus;
 use App\Entity\Media;
 use App\Form\CatType;
 use App\Service\AvatarLoader;
 use DateTime;
-use JMS\Serializer\SerializationContext;
-use JMS\Serializer\SerializerBuilder;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
