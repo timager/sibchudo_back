@@ -36,7 +36,7 @@ class Litter {
     private $father;
 
     /**
-     * @ORM\Column(type="date", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $birthday;
 
