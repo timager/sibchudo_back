@@ -21,12 +21,8 @@ class ColorController extends RestController {
      * @return JsonResponse
      */
     public function getBaseColors(Request $request) {
-        $statuses = $this->getDoctrine()->getRepository(BaseColor::class)->findAll();
-        $context = SerializationContext::create();
-        $context->setSerializeNull(true);
-        $context->enableMaxDepthChecks();
-        $json = SerializerBuilder::create()->build()->serialize($statuses, 'json', $context);
-        return new JsonResponse($json, 200, [], true);
+        $baseColors = $this->getDoctrine()->getRepository(BaseColor::class)->findAll();
+        return $this->makeJsonResponse($baseColors);
     }
 
     /**
@@ -35,12 +31,8 @@ class ColorController extends RestController {
      * @return JsonResponse
      */
     public function getBreeds(Request $request) {
-        $statuses = $this->getDoctrine()->getRepository(Breed::class)->findAll();
-        $context = SerializationContext::create();
-        $context->setSerializeNull(true);
-        $context->enableMaxDepthChecks();
-        $json = SerializerBuilder::create()->build()->serialize($statuses, 'json', $context);
-        return new JsonResponse($json, 200, [], true);
+        $breeds = $this->getDoctrine()->getRepository(Breed::class)->findAll();
+        return $this->makeJsonResponse($breeds);
     }
 
     /**

@@ -11,18 +11,14 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class OwnerController extends AbstractController {
+class OwnerController extends RestController {
     /**
      * @Route("/api/owner", methods={"GET"})
      * @param Request $request
      * @return JsonResponse
      */
     public function getOwners(Request $request) {
-        $statuses = $this->getDoctrine()->getRepository(Owner::class)->findAll();
-        $context = SerializationContext::create();
-        $context->setSerializeNull(true);
-        $context->enableMaxDepthChecks();
-        $json = SerializerBuilder::create()->build()->serialize($statuses, 'json', $context);
-        return new JsonResponse($json, 200, [], true);
+        $owners = $this->getDoctrine()->getRepository(Owner::class)->findAll();
+        return $this->makeJsonResponse($owners);
     }
 }

@@ -74,11 +74,7 @@ class CatController extends RestFormController {
      */
     public function getById(int $id) {
         $cat = $this->getDoctrine()->getRepository(Cat::class)->find($id);
-        $context = SerializationContext::create();
-        $context->setSerializeNull(true);
-        $context->enableMaxDepthChecks();
-        $json = SerializerBuilder::create()->build()->serialize($cat, 'json', $context);
-        return new JsonResponse($json, 200, [], true);
+        return $this->makeJsonResponse($cat);
     }
 
     /**
@@ -90,7 +86,7 @@ class CatController extends RestFormController {
         $cat = $this->getDoctrine()->getRepository(Cat::class)->find($id);
         $this->getDoctrine()->getManager()->remove($cat);
         $this->getDoctrine()->getManager()->flush();
-        return new JsonResponse();
+        return $this->makeJsonResponse($cat);
     }
 
     /**

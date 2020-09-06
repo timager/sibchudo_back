@@ -26,11 +26,7 @@ class LitterController extends RestController {
         $order = $data['order'] ?? "[]";
         $order = json_decode($order, true);
         $litters = $this->getDoctrine()->getRepository(Litter::class)->findBy($criteria, $order, $limit, $offset);
-        $context = SerializationContext::create();
-        $context->setSerializeNull(true);
-        $context->enableMaxDepthChecks();
-        $json = SerializerBuilder::create()->build()->serialize($litters, 'json', $context);
-        return new JsonResponse($json, 200, [], true);
+        return $this->makeJsonResponse($litters);
     }
 
     /**
@@ -53,10 +49,6 @@ class LitterController extends RestController {
      */
     public function getById(int $id) {
         $litter = $this->getDoctrine()->getRepository(Litter::class)->find($id);
-        $context = SerializationContext::create();
-        $context->setSerializeNull(true);
-        $context->enableMaxDepthChecks();
-        $json = SerializerBuilder::create()->build()->serialize($litter, 'json', $context);
-        return new JsonResponse($json, 200, [], true);
+        return $this->makeJsonResponse($litter);
     }
 }

@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class CommunityController extends AbstractController {
+class CommunityController extends RestController {
 
     /**
      * @Route("/api/community", methods={"GET"})
@@ -20,11 +20,7 @@ class CommunityController extends AbstractController {
      * @return JsonResponse
      */
     public function getCommunity(Request $request) {
-        $statuses = $this->getDoctrine()->getRepository(Community::class)->findAll();
-        $context = SerializationContext::create();
-        $context->setSerializeNull(true);
-        $context->enableMaxDepthChecks();
-        $json = SerializerBuilder::create()->build()->serialize($statuses, 'json', $context);
-        return new JsonResponse($json, 200, [], true);
+        $communities = $this->getDoctrine()->getRepository(Community::class)->findAll();
+        return $this->makeJsonResponse($communities);
     }
 }
