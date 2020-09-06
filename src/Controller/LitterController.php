@@ -81,4 +81,18 @@ class LitterController extends RestFormController {
         $em->flush();
         return $this->makeJsonResponse($litter);
     }
+
+    /**
+     * @Route("/api/litter/{id}", methods={"DELETE"})
+     * @param  Request  $request
+     * @param  Litter   $litter
+     *
+     * @return Response
+     */
+    public function delete(Request $request, Litter $litter) {
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($litter);
+        $em->flush();
+        return $this->makeJsonResponse($litter);
+    }
 }
