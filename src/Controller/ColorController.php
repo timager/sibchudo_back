@@ -7,40 +7,33 @@ use App\Entity\BaseColor;
 use App\Entity\Breed;
 use App\Entity\ColorCode;
 use Doctrine\Common\Collections\Criteria;
-use JMS\Serializer\SerializationContext;
-use JMS\Serializer\SerializerBuilder;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ColorController extends RestController {
     /**
      * @Route("/api/base_color", methods={"GET"})
-     * @param Request $request
      * @return JsonResponse
      */
-    public function getBaseColors(Request $request) {
+    public function getBaseColors() {
         $baseColors = $this->getDoctrine()->getRepository(BaseColor::class)->findAll();
         return $this->makeJsonResponse($baseColors);
     }
 
     /**
      * @Route("/api/breed", methods={"GET"})
-     * @param Request $request
      * @return JsonResponse
      */
-    public function getBreeds(Request $request) {
+    public function getBreeds() {
         $breeds = $this->getDoctrine()->getRepository(Breed::class)->findAll();
         return $this->makeJsonResponse($breeds);
     }
 
     /**
      * @Route("/api/color_code", methods={"GET"})
-     * @param Request $request
      * @return JsonResponse
      */
-    public function getColorCodes(Request $request) {
+    public function getColorCodes() {
         $data = $this->getRequestQueryParams();
         $custom = $data['custom'] ?? "[]";
         $custom = json_decode($custom, true);
