@@ -1,0 +1,12 @@
+POST http://sibchudo.local/api/litter
+Content-Type: application/json
+
+{
+  "letter": "A",
+  "birthday": "2019-03-11T21:00:00.000Z",
+  "mother": 1,
+  "father": 2,
+  "community": 1
+}
+
+###

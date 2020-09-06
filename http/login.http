@@ -1,10 +1,10 @@
 
-POST http://sibchudo.local/api/session
+POST http://45.84.224.17/api/session
 Content-Type: application/json
 
 {
-  "username": "nik_mak@bk.ru",
-  "password": "123"
+  "username": "timger98@gmail.com",
+  "password": "jija"
 }
 
 ###
