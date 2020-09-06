@@ -39,7 +39,7 @@ class ColorController extends RestController {
         $custom = json_decode($custom, true);
         $firstNumber = $custom["firstNumber"] ?? null;
         $criteria = Criteria::create();
-        if($firstNumber){
+        if(!is_null($firstNumber)){
             $criteria->andWhere(Criteria::expr()->startsWith('code', $firstNumber));
         }
         $statuses = $this->getDoctrine()->getRepository(ColorCode::class)->matching($criteria)->toArray();
