@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class LitterController extends AbstractController {
+class LitterController extends RestController {
 
     /**
      * @Route("/api/litter", methods={"GET"})
@@ -18,11 +18,13 @@ class LitterController extends AbstractController {
      * @return JsonResponse
      */
     public function getBy(Request $request) {
-        $post = json_decode($request->getContent(), true);
-        $criteria = $post['criteria'] ?? [];
-        $limit = $post['limit'] ?? null;
-        $offset = $post['offset'] ?? null;
-        $order = $post['order'] ?? null;
+        $data = $this->getRequestQueryParams();
+        $criteria = $data['criteria'] ?? "[]";
+        $criteria = json_decode($criteria, true);
+        $limit = $data['limit'] ?? null;
+        $offset = $data['offset'] ?? null;
+        $order = $data['order'] ?? "[]";
+        $order = json_decode($order, true);
         $litters = $this->getDoctrine()->getRepository(Litter::class)->findBy($criteria, $order, $limit, $offset);
         $context = SerializationContext::create();
         $context->setSerializeNull(true);
@@ -37,8 +39,9 @@ class LitterController extends AbstractController {
      * @return JsonResponse
      */
     public function count(Request $request) {
-        $post = json_decode($request->getContent(), true);
-        $criteria = $post['criteria'] ?? [];
+        $data = $this->getRequestQueryParams();
+        $criteria = $data['criteria'] ?? "[]";
+        $criteria = json_decode($criteria, true);
         $litters = $this->getDoctrine()->getRepository(Litter::class)->count($criteria);
         return new JsonResponse($litters);
     }
