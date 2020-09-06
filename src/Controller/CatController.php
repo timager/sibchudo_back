@@ -7,9 +7,10 @@ use App\Entity\User;
 use App\Entity\CatStatus;
 use App\Entity\Media;
 use App\Form\CatType;
-use App\Service\AvatarLoader;
+use App\Service\MediaLoader;
 use DateTime;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -90,42 +91,38 @@ class CatController extends RestFormController {
     }
 
     /**
-     * @Route("/api/cat/{id}/avatar", methods={"POST"})
-     * @param Request $request
-     * @param int $id
-     * @param AvatarLoader $loader
+     * @Route("/api/cat/{id}/media", methods={"POST"})
+     * @param  Request      $request
+     * @param  Cat          $cat
+     * @param  MediaLoader  $loader
+     *
      * @return Response
-     * @throws \Exception
      */
-    public function loadImage(Request $request, int $id, AvatarLoader $loader) {
+    public function loadImage(Request $request, Cat $cat, MediaLoader $loader) {
         $files = $request->files->all();
-        if(count($files) != 1) {
-            return new Response("", 400);
-        }
-        $name = $loader->upload($files['avatar']);
-        if($name != null) {
-            /**
-             * @var Cat $cat
-             */
-            $cat = $this->getDoctrine()->getRepository(Cat::class)->find($id);
-            if($cat->getAvatar() !== null) {
-                if(substr($cat->getAvatar()->getDestination(), 0, 1) === "/") {
-                    $loader->delete($cat->getAvatar()->getDestination());
-                }
-                $this->getDoctrine()->getManager()->remove($cat->getAvatar());
-                $cat->setAvatar(null);
+        $medias = $loader->uploadArray($files);
+        foreach ($medias as $media){
+            if($media !== null){
+                $cat->addMedia($media);
+                $this->getManager()->persist($media);
             }
-            $avatar = new Media();
-            $avatar->setCat($cat);
-            $avatar->setDestination($this->getParameter('avatar_web') . $name);
-            $avatar->setUploadDate(new DateTime());
-            $cat->setAvatar($avatar);
-            $this->getDoctrine()->getManager()->persist($avatar);
-            $this->getDoctrine()->getManager()->persist($cat);
-            $this->getDoctrine()->getManager()->flush();
-            return new Response('uploaded');
         }
-        return new Response("Ошибка загрузки", 500);
+        $this->getManager()->flush();
+        return $this->makeJsonResponse($medias);
+    }
+
+    /**
+     * @Route("/api/cat/{id}/media/{id2}", methods={"PATCH"})
+     * @ParamConverter("cat", options={"id"="id"})
+     * @ParamConverter("media", options={"id"="id2"})
+     * @param  Cat      $cat
+     * @param  Media    $media
+     * @return Response
+     */
+    public function setAvatar(Cat $cat, Media $media) {
+        $cat->setAvatar($media);
+        $this->getManager()->flush();
+        return $this->makeJsonResponse($cat);
     }
 
 

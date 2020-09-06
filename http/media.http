@@ -1,0 +1,18 @@
+POST http://sibchudo.local/api/cat/1/media
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="photo"; filename="cat.jpeg"
+
+< cat.jpeg
+--WebAppBoundary--
+
+###
+DELETE http://sibchudo.local/api/media/7
+Content-Type: application/json
+
+###
+PATCH http://sibchudo.local/api/cat/1/media/8
+Content-Type: application/json
+
+###
