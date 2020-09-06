@@ -35,7 +35,7 @@ class CatController extends RestFormController {
     }
 
     /**
-     * @Route("/api/cat/genders", methods={"GET"})
+     * @Route("/api/gender", methods={"GET"})
      * @return JsonResponse
      */
     public function getGenders() {
@@ -46,16 +46,12 @@ class CatController extends RestFormController {
     }
 
     /**
-     * @Route("/api/cat/statuses", methods={"GET"})
+     * @Route("/api/status", methods={"GET"})
      * @return JsonResponse
      */
     public function getStatuses() {
         $statuses = $this->getDoctrine()->getRepository(CatStatus::class)->findAll();
-        $context = SerializationContext::create();
-        $context->setSerializeNull(true);
-        $context->enableMaxDepthChecks();
-        $json = SerializerBuilder::create()->build()->serialize($statuses, 'json', $context);
-        return new JsonResponse($json, 200, [], true);
+        return $this->makeJsonResponse($statuses);
     }
 
     /**

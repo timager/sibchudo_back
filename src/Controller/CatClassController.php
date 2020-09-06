@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class CatClassController extends AbstractController {
+class CatClassController extends RestController {
     /**
      * @Route("/api/class", methods={"GET"})
      * @param Request $request
@@ -19,10 +19,6 @@ class CatClassController extends AbstractController {
      */
     public function getCatClasses(Request $request) {
         $statuses = $this->getDoctrine()->getRepository(CatClass::class)->findAll();
-        $context = SerializationContext::create();
-        $context->setSerializeNull(true);
-        $context->enableMaxDepthChecks();
-        $json = SerializerBuilder::create()->build()->serialize($statuses, 'json', $context);
-        return new JsonResponse($json, 200, [], true);
+        return $this->makeJsonResponse($statuses);
     }
 }
