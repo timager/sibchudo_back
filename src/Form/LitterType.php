@@ -2,32 +2,31 @@
 
 namespace App\Form;
 
-use App\Entity\Cat;
+use App\Entity\Litter;
+use App\Form\DataTransformer\DateTransformer;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CatType extends AbstractType
+class LitterType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('gender')
-            ->add('color', ColorType::class)
-            ->add('catClass')
-            ->add('title')
-            ->add('litter')
+            ->add('letter')
+            ->add('birthday', TextType::class)
+            ->add('mother')
+            ->add('father')
             ->add('community')
-            ->add('owner')
-            ->add('status')
         ;
+        $builder->get('birthday')->addModelTransformer(new DateTransformer());
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Cat::class,
+            'data_class' => Litter::class,
             'csrf_protection' => false,
             'allow_extra_fields' => true
         ]);

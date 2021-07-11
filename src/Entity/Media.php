@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\Date;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MediaRepository")
@@ -36,6 +37,17 @@ class Media
      */
     private $cat;
 
+
+    private ?string $dir = null;
+
+    /**
+     * Media constructor.
+     */
+    public function __construct(){
+        $this->uploadDate = new \DateTime();
+    }
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -58,12 +70,6 @@ class Media
         return $this->uploadDate;
     }
 
-    public function setUploadDate(\DateTimeInterface $uploadDate): self
-    {
-        $this->uploadDate = $uploadDate;
-
-        return $this;
-    }
 
     public function getDescription(): ?string
     {
@@ -87,5 +93,10 @@ class Media
         $this->cat = $cat;
 
         return $this;
+    }
+
+    public function setDir(string $dir)
+    {
+        $this->dir = $dir;
     }
 }

@@ -4,9 +4,10 @@
 namespace App\Service;
 
 
+use App\Entity\Media;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class AvatarLoader
+class MediaLoader
 {
     private $targetDir;
 
@@ -15,21 +16,31 @@ class AvatarLoader
         $this->targetDir = $targetDir;
     }
 
+    public function uploadArray(array $files){
+        $medias = [];
+        foreach ($files as $file){
+            $medias[] = $this->upload($file);
+        }
+        return $medias;
+    }
+
     public function upload(UploadedFile $file)
     {
         $extension = $file->guessExtension();
         if (in_array($extension, ['jpeg', 'jpg', 'png','webp'])) {
+            $media = new Media();
             $fileName = md5(uniqid()) . '.' . $extension;
             $file->move($this->getTargetDir(), $fileName);
+            $media->setDestination($fileName);
         } else {
-            $fileName = null;
+            $media = null;
         }
-        return $fileName;
+        return $media;
     }
 
-    public function delete($fileName){
-        if($fileName!==null){
-            $fileName = str_replace("/uploads/avatars/",'',$fileName);
+    public function deleteFile(Media $media){
+        $fileName = str_replace("/uploads/avatars/",'',$media->getDestination());
+        if(file_exists($this->targetDir.$fileName)){
             unlink($this->targetDir.$fileName);
         }
     }

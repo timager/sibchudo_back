@@ -2,15 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\Cat;
 use App\Entity\Litter;
-use JMS\Serializer\SerializationContext;
-use JMS\Serializer\SerializerBuilder;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Form\CatType;
+use App\Form\LitterType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class LitterController extends RestController {
+class LitterController extends RestFormController {
 
     /**
      * @Route("/api/litter", methods={"GET"})
@@ -49,6 +50,49 @@ class LitterController extends RestController {
      */
     public function getById(int $id) {
         $litter = $this->getDoctrine()->getRepository(Litter::class)->find($id);
+        return $this->makeJsonResponse($litter);
+    }
+
+    /**
+     * @Route("/api/litter", methods={"POST"})
+     * @param Request $request
+     * @return Response
+     */
+    public function create(Request $request) {
+        $em = $this->getDoctrine()->getManager();
+        $litter = new Litter();
+        $this->useForm(LitterType::class, $litter);
+        $em->persist($litter);
+        $em->flush();
+        return $this->makeJsonResponse($litter);
+    }
+
+    /**
+     * @Route("/api/litter/{id}", methods={"PUT"})
+     * @param  Request  $request
+     * @param  Litter   $litter
+     *
+     * @return Response
+     */
+    public function edit(Request $request, Litter $litter) {
+        $em = $this->getDoctrine()->getManager();
+        $this->useForm(LitterType::class, $litter);
+        $em->persist($litter);
+        $em->flush();
+        return $this->makeJsonResponse($litter);
+    }
+
+    /**
+     * @Route("/api/litter/{id}", methods={"DELETE"})
+     * @param  Request  $request
+     * @param  Litter   $litter
+     *
+     * @return Response
+     */
+    public function delete(Request $request, Litter $litter) {
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($litter);
+        $em->flush();
         return $this->makeJsonResponse($litter);
     }
 }

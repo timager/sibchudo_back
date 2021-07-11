@@ -63,6 +63,7 @@ class Cat
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Media", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(onDelete="SET NULL")
      * @Serializer\MaxDepth(1)
      */
     private $avatar;

@@ -25,18 +25,20 @@ class Litter {
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Cat")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      * @Serializer\MaxDepth(3)
      */
     private $mother;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Cat")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      * @Serializer\MaxDepth(3)
      */
     private $father;
 
     /**
-     * @ORM\Column(type="date", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $birthday;
 
