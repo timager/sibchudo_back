@@ -2,23 +2,20 @@
 
 namespace App\Controller;
 
-use App\Entity\Cat;
 use App\Entity\Litter;
-use App\Form\CatType;
 use App\Form\LitterType;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class LitterController extends RestFormController {
+class LitterController extends RestFormController
+{
 
     /**
      * @Route("/api/litter", methods={"GET"})
-     * @param Request $request
      * @return JsonResponse
      */
-    public function getBy(Request $request) {
+    public function getBy(): JsonResponse
+    {
         $data = $this->getRequestQueryParams();
         $criteria = $data['criteria'] ?? "[]";
         $criteria = json_decode($criteria, true);
@@ -32,10 +29,10 @@ class LitterController extends RestFormController {
 
     /**
      * @Route("/api/litter/count", methods={"GET"})
-     * @param Request $request
      * @return JsonResponse
      */
-    public function count(Request $request) {
+    public function count(): JsonResponse
+    {
         $data = $this->getRequestQueryParams();
         $criteria = $data['criteria'] ?? "[]";
         $criteria = json_decode($criteria, true);
@@ -48,17 +45,18 @@ class LitterController extends RestFormController {
      * @param int $id
      * @return JsonResponse
      */
-    public function getById(int $id) {
+    public function getById(int $id): JsonResponse
+    {
         $litter = $this->getDoctrine()->getRepository(Litter::class)->find($id);
         return $this->makeJsonResponse($litter);
     }
 
     /**
      * @Route("/api/litter", methods={"POST"})
-     * @param Request $request
-     * @return Response
+     * @return JsonResponse
      */
-    public function create(Request $request) {
+    public function create(): JsonResponse
+    {
         $em = $this->getDoctrine()->getManager();
         $litter = new Litter();
         $this->useForm(LitterType::class, $litter);
@@ -69,12 +67,12 @@ class LitterController extends RestFormController {
 
     /**
      * @Route("/api/litter/{id}", methods={"PUT"})
-     * @param  Request  $request
-     * @param  Litter   $litter
+     * @param Litter $litter
      *
-     * @return Response
+     * @return JsonResponse
      */
-    public function edit(Request $request, Litter $litter) {
+    public function edit(Litter $litter): JsonResponse
+    {
         $em = $this->getDoctrine()->getManager();
         $this->useForm(LitterType::class, $litter);
         $em->persist($litter);
@@ -84,12 +82,12 @@ class LitterController extends RestFormController {
 
     /**
      * @Route("/api/litter/{id}", methods={"DELETE"})
-     * @param  Request  $request
-     * @param  Litter   $litter
+     * @param Litter $litter
      *
-     * @return Response
+     * @return JsonResponse
      */
-    public function delete(Request $request, Litter $litter) {
+    public function delete(Litter $litter): JsonResponse
+    {
         $em = $this->getDoctrine()->getManager();
         $em->remove($litter);
         $em->flush();

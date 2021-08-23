@@ -14,22 +14,22 @@ class Contact
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $type;
+    private ?string $type;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $value;
+    private ?string $value;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $typeRU;
+    private ?string $typeRU;
 
     public function getId(): ?int
     {

@@ -16,33 +16,32 @@ class Owner
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private ?string $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $description;
-    
+    private ?string $description;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Media", cascade={"persist", "remove"})
      */
-    private $avatar;
+    private ?Media $avatar;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Community", mappedBy="leader")
      */
-    private $communities;
+    private ArrayCollection $communities;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Contact")
      */
-    private $contacts;
+    private ArrayCollection $contacts;
 
     public function __construct()
     {
@@ -79,30 +78,6 @@ class Owner
         return $this;
     }
 
-    public function getPhone(): ?string
-    {
-        return $this->phone;
-    }
-
-    public function setPhone(?string $phone): self
-    {
-        $this->phone = $phone;
-
-        return $this;
-    }
-
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(?string $email): self
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
     public function getAvatar(): ?Media
     {
         return $this->avatar;
@@ -116,7 +91,7 @@ class Owner
     }
 
     /**
-     * @return Collection|Community[]
+     * @return Collection<Community>
      */
     public function getCommunities(): Collection
     {
@@ -147,7 +122,7 @@ class Owner
     }
 
     /**
-     * @return Collection|Contact[]
+     * @return Collection<Contact>
      */
     public function getContacts(): Collection
     {

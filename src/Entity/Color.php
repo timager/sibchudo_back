@@ -14,59 +14,59 @@ class Color
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Breed")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $breed;
+    private ?Breed $breed;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\BaseColor")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $baseColor;
+    private ?BaseColor $baseColor;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\BaseColor")
      */
-    private $baseColorAdditional;
+    private ?BaseColor $baseColorAdditional;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ColorCode")
      */
-    private $code0;
+    private ?ColorCode $code0;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ColorCode")
      */
-    private $code1;
+    private ?ColorCode $code1;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ColorCode")
      */
-    private $code2;
+    private ?ColorCode $code2;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ColorCode")
      */
-    private $code3;
+    private ?ColorCode $code3;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ColorCode")
      */
-    private $tail;
+    private ?ColorCode $tail;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ColorCode")
      */
-    private $eyes;
+    private ?ColorCode $eyes;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ColorCode")
      */
-    private $ears;
+    private ?ColorCode $ears;
 
     public function getId(): ?int
     {

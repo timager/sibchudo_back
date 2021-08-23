@@ -12,13 +12,15 @@ class ImageDeleteListener
 {
     private MediaLoader $loader;
 
-    public function __construct(MediaLoader $loader) {
+    public function __construct(MediaLoader $loader)
+    {
         $this->loader = $loader;
     }
 
-    public function postRemove(LifecycleEventArgs $args) {
+    public function postRemove(LifecycleEventArgs $args): void
+    {
         $entity = $args->getObject();
-        if($entity instanceof Media) {
+        if ($entity instanceof Media) {
             $this->loader->deleteFile($entity);
         }
     }

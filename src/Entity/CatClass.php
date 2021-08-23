@@ -14,22 +14,22 @@ class CatClass
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private ?string $name;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $nameRU;
+    private ?string $nameRU;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $description;
+    private ?string $description;
 
     public function getId(): ?int
     {

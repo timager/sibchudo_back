@@ -2,8 +2,9 @@
 
 namespace App\Entity;
 
+use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints\Date;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MediaRepository")
@@ -15,27 +16,27 @@ class Media
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $destination;
+    private ?string $destination;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $uploadDate;
+    private DateTime $uploadDate;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $description;
+    private ?string $description;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Cat", inversedBy="media")
      */
-    private $cat;
+    private ?Cat $cat;
 
 
     private ?string $dir = null;
@@ -43,8 +44,9 @@ class Media
     /**
      * Media constructor.
      */
-    public function __construct(){
-        $this->uploadDate = new \DateTime();
+    public function __construct()
+    {
+        $this->uploadDate = new DateTime();
     }
 
 
@@ -65,7 +67,7 @@ class Media
         return $this;
     }
 
-    public function getUploadDate(): ?\DateTimeInterface
+    public function getUploadDate(): ?DateTimeInterface
     {
         return $this->uploadDate;
     }

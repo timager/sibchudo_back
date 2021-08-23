@@ -17,74 +17,74 @@ class Cat
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private ?string $name;
 
     /**
      * @ORM\Column(type="string", length=6)
      */
-    private $gender;
+    private ?string $gender;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Media", mappedBy="cat")
      * @Serializer\MaxDepth(2)
      */
-    private $media;
+    private ArrayCollection $media;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Color", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      * @Serializer\MaxDepth(4)
      */
-    private $color;
+    private ?Color $color;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\CatClass")
      * @Serializer\MaxDepth(1)
      */
-    private $catClass;
+    private ?CatClass $catClass;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Title")
      * @Serializer\MaxDepth(1)
      */
-    private $title;
+    private ?Title $title;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Litter", inversedBy="cats")
      * @ORM\JoinColumn(nullable=false)
      * @Serializer\MaxDepth(2)
      */
-    private $litter;
+    private ?Litter $litter;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Media", cascade={"persist", "remove"})
      * @ORM\JoinColumn(onDelete="SET NULL")
      * @Serializer\MaxDepth(1)
      */
-    private $avatar;
+    private ?Media $avatar;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Community")
      * @Serializer\MaxDepth(1)
      */
-    private $community;
+    private ?Community $community;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Owner")
      * @Serializer\MaxDepth(1)
      */
-    private $owner;
+    private ?Owner $owner;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\CatStatus")
      * @Serializer\MaxDepth(1)
      */
-    private $status;
+    private ?CatStatus $status;
 
 
     public function __construct()

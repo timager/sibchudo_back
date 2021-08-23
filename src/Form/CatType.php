@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CatType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('name')
@@ -20,16 +20,16 @@ class CatType extends AbstractType
             ->add('litter')
             ->add('community')
             ->add('owner')
-            ->add('status')
-        ;
+            ->add('status');
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
+        $defaults = [
             'data_class' => Cat::class,
             'csrf_protection' => false,
             'allow_extra_fields' => true
-        ]);
+        ];
+        $resolver->setDefaults($defaults);
     }
 }

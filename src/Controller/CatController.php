@@ -3,27 +3,25 @@
 namespace App\Controller;
 
 use App\Entity\Cat;
-use App\Entity\User;
 use App\Entity\CatStatus;
 use App\Entity\Media;
 use App\Form\CatType;
 use App\Service\MediaLoader;
-use DateTime;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class CatController extends RestFormController {
+class CatController extends RestFormController
+{
 
     /**
      * @Route("/api/cat", methods={"GET"})
-     * @param Request $request
      * @return JsonResponse
      */
-    public function getBy(Request $request) {
+    public function getBy(): JsonResponse
+    {
         $data = $this->getRequestQueryParams();
         $criteria = $data['criteria'] ?? "[]";
         $criteria = json_decode($criteria, true);
@@ -39,28 +37,31 @@ class CatController extends RestFormController {
      * @Route("/api/gender", methods={"GET"})
      * @return JsonResponse
      */
-    public function getGenders() {
-        return new JsonResponse([
+    public function getGenders(): JsonResponse
+    {
+        $data = [
             ["value" => 'female', "name" => "Кошка"],
             ["value" => 'male', "name" => "Кот"],
-        ]);
+        ];
+        return new JsonResponse($data);
     }
 
     /**
      * @Route("/api/status", methods={"GET"})
      * @return JsonResponse
      */
-    public function getStatuses() {
+    public function getStatuses(): JsonResponse
+    {
         $statuses = $this->getDoctrine()->getRepository(CatStatus::class)->findAll();
         return $this->makeJsonResponse($statuses);
     }
 
     /**
      * @Route("/api/cat/count", methods={"GET"})
-     * @param Request $request
      * @return JsonResponse
      */
-    public function getCount(Request $request) {
+    public function getCount(): JsonResponse
+    {
         $data = $this->getRequestQueryParams();
         $criteria = $data['criteria'] ?? "[]";
         $criteria = json_decode($criteria);
@@ -73,7 +74,8 @@ class CatController extends RestFormController {
      * @param int $id
      * @return JsonResponse
      */
-    public function getById(int $id) {
+    public function getById(int $id): JsonResponse
+    {
         $cat = $this->getDoctrine()->getRepository(Cat::class)->find($id);
         return $this->makeJsonResponse($cat);
     }
@@ -83,7 +85,8 @@ class CatController extends RestFormController {
      * @param int $id
      * @return JsonResponse
      */
-    public function deleteById(int $id) {
+    public function deleteById(int $id): JsonResponse
+    {
         $cat = $this->getDoctrine()->getRepository(Cat::class)->find($id);
         $this->getDoctrine()->getManager()->remove($cat);
         $this->getDoctrine()->getManager()->flush();
@@ -92,17 +95,18 @@ class CatController extends RestFormController {
 
     /**
      * @Route("/api/cat/{id}/media", methods={"POST"})
-     * @param  Request      $request
-     * @param  Cat          $cat
-     * @param  MediaLoader  $loader
+     * @param Request $request
+     * @param Cat $cat
+     * @param MediaLoader $loader
      *
      * @return Response
      */
-    public function loadImage(Request $request, Cat $cat, MediaLoader $loader) {
+    public function loadImage(Request $request, Cat $cat, MediaLoader $loader): Response
+    {
         $files = $request->files->all();
         $medias = $loader->uploadArray($files);
-        foreach ($medias as $media){
-            if($media !== null){
+        foreach ($medias as $media) {
+            if ($media !== null) {
                 $cat->addMedia($media);
                 $this->getManager()->persist($media);
             }
@@ -115,11 +119,12 @@ class CatController extends RestFormController {
      * @Route("/api/cat/{id}/media/{id2}", methods={"PATCH"})
      * @ParamConverter("cat", options={"id"="id"})
      * @ParamConverter("media", options={"id"="id2"})
-     * @param  Cat      $cat
-     * @param  Media    $media
+     * @param Cat $cat
+     * @param Media $media
      * @return Response
      */
-    public function setAvatar(Cat $cat, Media $media) {
+    public function setAvatar(Cat $cat, Media $media): Response
+    {
         $cat->setAvatar($media);
         $this->getManager()->flush();
         return $this->makeJsonResponse($cat);
@@ -128,10 +133,10 @@ class CatController extends RestFormController {
 
     /**
      * @Route("/api/cat", methods={"POST"})
-     * @param Request $request
      * @return Response
      */
-    public function create(Request $request) {
+    public function create(): Response
+    {
         $em = $this->getDoctrine()->getManager();
         $cat = new Cat();
         $this->useForm(CatType::class, $cat);
@@ -142,12 +147,12 @@ class CatController extends RestFormController {
 
     /**
      * @Route("/api/cat/{id}", methods={"PUT"})
-     * @param  Request  $request
-     * @param  Cat      $cat
+     * @param Cat $cat
      *
      * @return Response
      */
-    public function edit(Request $request, Cat $cat) {
+    public function edit(Cat $cat): Response
+    {
         $em = $this->getDoctrine()->getManager();
         $this->useForm(CatType::class, $cat);
         $em->persist($cat);

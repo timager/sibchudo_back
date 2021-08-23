@@ -14,22 +14,22 @@ class Breed
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=3)
      */
-    private $code;
+    private ?string $code;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private ?string $name;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $nameRU;
+    private ?string $nameRU;
 
     public function getId(): ?int
     {

@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ColorType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('breed')
@@ -21,16 +21,16 @@ class ColorType extends AbstractType
             ->add('code3')
             ->add('tail')
             ->add('eyes')
-            ->add('ears')
-        ;
+            ->add('ears');
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
+        $defaults = [
             'data_class' => Color::class,
             'allow_extra_fields' => true,
             'csrf_protection' => false
-        ]);
+        ];
+        $resolver->setDefaults($defaults);
     }
 }

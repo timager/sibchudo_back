@@ -20,16 +20,11 @@ class Serializer
 
     }
 
-    protected function makeSerializer() : ?\JMS\Serializer\Serializer {
+    protected function makeSerializer() : \JMS\Serializer\Serializer {
         $builder = SerializerBuilder::create();
         $namingStrategy = new SerializedNameAnnotationStrategy(new IdenticalPropertyNamingStrategy());
         $builder->setPropertyNamingStrategy($namingStrategy);
-        $serializer = $builder->build();
-        if($serializer instanceof \JMS\Serializer\Serializer){
-            return $serializer;
-        }else{
-            return null;
-        }
+        return $builder->build();
     }
 
     protected function makeContext() : SerializationContext{

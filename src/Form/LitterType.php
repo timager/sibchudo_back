@@ -11,24 +11,24 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class LitterType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('letter')
             ->add('birthday', TextType::class)
             ->add('mother')
             ->add('father')
-            ->add('community')
-        ;
+            ->add('community');
         $builder->get('birthday')->addModelTransformer(new DateTransformer());
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
+        $defaults = [
             'data_class' => Litter::class,
             'csrf_protection' => false,
             'allow_extra_fields' => true
-        ]);
+        ];
+        $resolver->setDefaults($defaults);
     }
 }

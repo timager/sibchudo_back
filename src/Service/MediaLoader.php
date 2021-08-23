@@ -9,25 +9,26 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class MediaLoader
 {
-    private $targetDir;
+    private string $targetDir;
 
     public function __construct(string $targetDir)
     {
         $this->targetDir = $targetDir;
     }
 
-    public function uploadArray(array $files){
+    public function uploadArray(array $files): array
+    {
         $medias = [];
-        foreach ($files as $file){
+        foreach ($files as $file) {
             $medias[] = $this->upload($file);
         }
         return $medias;
     }
 
-    public function upload(UploadedFile $file)
+    public function upload(UploadedFile $file): ?Media
     {
         $extension = $file->guessExtension();
-        if (in_array($extension, ['jpeg', 'jpg', 'png','webp'])) {
+        if (in_array($extension, ['jpeg', 'jpg', 'png', 'webp'])) {
             $media = new Media();
             $fileName = md5(uniqid()) . '.' . $extension;
             $file->move($this->getTargetDir(), $fileName);
@@ -38,14 +39,15 @@ class MediaLoader
         return $media;
     }
 
-    public function deleteFile(Media $media){
-        $fileName = str_replace("/uploads/avatars/",'',$media->getDestination());
-        if(file_exists($this->targetDir.$fileName)){
-            unlink($this->targetDir.$fileName);
+    public function deleteFile(Media $media): void
+    {
+        $fileName = str_replace("/uploads/avatars/", '', $media->getDestination());
+        if (file_exists($this->targetDir . $fileName)) {
+            unlink($this->targetDir . $fileName);
         }
     }
 
-    public function getTargetDir()
+    public function getTargetDir(): string
     {
         return $this->targetDir;
     }
