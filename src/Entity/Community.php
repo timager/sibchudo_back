@@ -42,13 +42,13 @@ class Community
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Contact")
      */
-    private ArrayCollection $contacts;
+    private Collection $contacts;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Litter", mappedBy="community", orphanRemoval=true)
      * @Serializer\Exclude()
      */
-    private ArrayCollection $litters;
+    private Collection $litters;
 
     public function __construct()
     {

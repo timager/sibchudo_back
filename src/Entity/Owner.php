@@ -36,12 +36,12 @@ class Owner
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Community", mappedBy="leader")
      */
-    private ArrayCollection $communities;
+    private Collection $communities;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Contact")
      */
-    private ArrayCollection $contacts;
+    private Collection $contacts;
 
     public function __construct()
     {

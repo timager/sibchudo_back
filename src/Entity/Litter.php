@@ -55,7 +55,7 @@ class Litter
      * @ORM\OneToMany(targetEntity="App\Entity\Cat", mappedBy="litter", orphanRemoval=true)
      * @Serializer\MaxDepth(3)
      */
-    private ArrayCollection $cats;
+    private Collection $cats;
 
     public function __construct()
     {

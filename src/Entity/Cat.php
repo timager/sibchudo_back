@@ -33,7 +33,7 @@ class Cat
      * @ORM\OneToMany(targetEntity="App\Entity\Media", mappedBy="cat")
      * @Serializer\MaxDepth(2)
      */
-    private ArrayCollection $media;
+    private Collection $media;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Color", cascade={"persist", "remove"})
