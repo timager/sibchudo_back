@@ -22,12 +22,12 @@ class Cat
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private ?string $name;
+    private ?string $name = null;
 
     /**
      * @ORM\Column(type="string", length=6)
      */
-    private ?string $gender;
+    private ?string $gender = null;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Media", mappedBy="cat")
@@ -40,51 +40,51 @@ class Cat
      * @ORM\JoinColumn(nullable=false)
      * @Serializer\MaxDepth(4)
      */
-    private ?Color $color;
+    private ?Color $color = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\CatClass")
      * @Serializer\MaxDepth(1)
      */
-    private ?CatClass $catClass;
+    private ?CatClass $catClass = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Title")
      * @Serializer\MaxDepth(1)
      */
-    private ?Title $title;
+    private ?Title $title = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Litter", inversedBy="cats")
      * @ORM\JoinColumn(nullable=false)
      * @Serializer\MaxDepth(2)
      */
-    private ?Litter $litter;
+    private ?Litter $litter = null;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Media", cascade={"persist", "remove"})
      * @ORM\JoinColumn(onDelete="SET NULL")
      * @Serializer\MaxDepth(1)
      */
-    private ?Media $avatar;
+    private ?Media $avatar = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Community")
      * @Serializer\MaxDepth(1)
      */
-    private ?Community $community;
+    private ?Community $community = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Owner")
      * @Serializer\MaxDepth(1)
      */
-    private ?Owner $owner;
+    private ?Owner $owner = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\CatStatus")
      * @Serializer\MaxDepth(1)
      */
-    private ?CatStatus $status;
+    private ?CatStatus $status = null;
 
 
     public function __construct()
