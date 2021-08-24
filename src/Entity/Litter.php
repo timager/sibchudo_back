@@ -30,14 +30,14 @@ class Litter
      * @ORM\JoinColumn(onDelete="SET NULL")
      * @Serializer\MaxDepth(3)
      */
-    private ?Cat $mother;
+    private ?Cat $mother = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Cat")
      * @ORM\JoinColumn(onDelete="SET NULL")
      * @Serializer\MaxDepth(3)
      */
-    private ?Cat $father;
+    private ?Cat $father = null;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
