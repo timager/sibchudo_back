@@ -29,7 +29,7 @@ class CatClass
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private ?string $description;
+    private ?string $description = null;
 
     public function getId(): ?int
     {

@@ -2,11 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Entity\Cat;
 use App\Entity\CatStatus;
 use App\Entity\Media;
 use App\Form\CatType;
 use App\Service\MediaLoader;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -82,6 +84,7 @@ class CatController extends RestFormController
 
     /**
      * @Route("/api/cat/{id}", methods={"DELETE"})
+     * @IsGranted(User::ROLE_ADMIN)
      * @param int $id
      * @return JsonResponse
      */
@@ -95,6 +98,7 @@ class CatController extends RestFormController
 
     /**
      * @Route("/api/cat/{id}/media", methods={"POST"})
+     * @IsGranted(User::ROLE_ADMIN)
      * @param Request $request
      * @param Cat $cat
      * @param MediaLoader $loader
@@ -117,6 +121,7 @@ class CatController extends RestFormController
 
     /**
      * @Route("/api/cat/{id}/media/{id2}", methods={"PATCH"})
+     * @IsGranted(User::ROLE_ADMIN)
      * @ParamConverter("cat", options={"id"="id"})
      * @ParamConverter("media", options={"id"="id2"})
      * @param Cat $cat
@@ -133,6 +138,7 @@ class CatController extends RestFormController
 
     /**
      * @Route("/api/cat", methods={"POST"})
+     * @IsGranted(User::ROLE_ADMIN)
      * @return Response
      */
     public function create(): Response
@@ -147,6 +153,7 @@ class CatController extends RestFormController
 
     /**
      * @Route("/api/cat/{id}", methods={"PUT"})
+     * @IsGranted(User::ROLE_ADMIN)
      * @param Cat $cat
      *
      * @return Response

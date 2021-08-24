@@ -31,7 +31,7 @@ class Media
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private ?string $description;
+    private ?string $description = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Cat", inversedBy="media")
