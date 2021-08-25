@@ -7,6 +7,7 @@ use App\Entity\Cat;
 use App\Entity\CatStatus;
 use App\Entity\Media;
 use App\Form\CatType;
+use App\Service\CatService;
 use App\Service\MediaLoader;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -22,16 +23,18 @@ class CatController extends RestFormController
      * @Route("/api/cat", methods={"GET"})
      * @return JsonResponse
      */
-    public function getBy(): JsonResponse
+    public function getBy(CatService $service): JsonResponse
     {
         $data = $this->getRequestQueryParams();
-        $criteria = $data['criteria'] ?? "[]";
-        $criteria = json_decode($criteria, true);
-        $limit = $data['limit'] ?? null;
-        $offset = $data['offset'] ?? null;
-        $order = $data['order'] ?? "[]";
-        $order = json_decode($order, true);
-        $cats = $this->getDoctrine()->getRepository(Cat::class)->findBy($criteria, $order, $limit, $offset);
+        $filters = $data['filters'] ?? "[]";
+        $filters = json_decode($filters, true);
+        $search = $data['search'] ?? "[]";
+        $search = json_decode($search, true);
+        $sort = $data['sort'] ?? "[]";
+        $sort = json_decode($sort, true);
+        $limit = $data['limit'] ?? 10;
+        $offset = $data['offset'] ?? 0;
+        $cats = $service->getCats($service->buildBaseQuery($filters), $limit, $offset, $search, $sort);
         return $this->makeJsonResponse($cats);
     }
 
@@ -60,14 +63,17 @@ class CatController extends RestFormController
 
     /**
      * @Route("/api/cat/count", methods={"GET"})
+     * @param CatService $service
      * @return JsonResponse
      */
-    public function getCount(): JsonResponse
+    public function getCount(CatService $service): JsonResponse
     {
         $data = $this->getRequestQueryParams();
-        $criteria = $data['criteria'] ?? "[]";
-        $criteria = json_decode($criteria);
-        $cats = $this->getDoctrine()->getRepository(Cat::class)->findBy($criteria);
+        $filters = $data['filters'] ?? "[]";
+        $filters = json_decode($filters, true);
+        $search = $data['search'] ?? "[]";
+        $search = json_decode($search, true);
+        $cats = $service->getCount($service->buildBaseQuery($filters), $search);
         return new JsonResponse(count($cats));
     }
 
