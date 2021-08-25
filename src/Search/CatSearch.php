@@ -28,7 +28,8 @@ class CatSearch extends AbstractSearch
         return [
             'c.name' => AbstractSearch::DEFAULT,
             'c.gender' => AbstractSearch::STRICT,
-            'l.birthday' => AbstractSearch::DATE
+            'l.birthday' => AbstractSearch::DATE,
+            'l.id' => AbstractSearch::STRICT
         ];
     }
 }
