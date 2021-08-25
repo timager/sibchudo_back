@@ -15,11 +15,15 @@ abstract class AbstractSearch implements Search
     public const DATE = 'DATE';
     public const STRICT = 'STRICT';
 
-    private function addStrictSearch(QueryBuilder $builder, string $key, string $value): void
+    private function addStrictSearch(QueryBuilder $builder, string $key, ?string $value): void
     {
         $parameter = str_replace('.', '_', $key);
-        $builder->andWhere($builder->expr()->eq($key, ':'.$parameter));
-        $builder->setParameter($parameter, $value);
+        if($value !== null){
+            $builder->andWhere($builder->expr()->eq($key, ':'.$parameter));
+            $builder->setParameter($parameter, $value);
+        }else{
+            $builder->andWhere($builder->expr()->isNull($key));
+        }
     }
 
     private function addDefaultSearch(QueryBuilder $builder, string $key, string $value): void

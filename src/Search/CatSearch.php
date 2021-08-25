@@ -16,7 +16,7 @@ class CatSearch extends AbstractSearch
     {
         switch ($alias) {
             case 'l':
-                $builder->join('c.litter', $alias);
+                $builder->leftJoin('c.litter', $alias);
                 break;
             default:
                 throw new LogicException('Невозможно заджойнить алиас '.$alias);

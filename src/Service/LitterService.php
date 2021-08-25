@@ -23,7 +23,6 @@ class LitterService
         $builder->setMaxResults($limit);
         $builder->setFirstResult($offset);
         $data = $builder->select('l')->getQuery()->getResult();
-
         return $data;
     }
 

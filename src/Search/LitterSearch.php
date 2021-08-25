@@ -15,10 +15,10 @@ class LitterSearch extends AbstractSearch
     {
         switch ($alias) {
             case 'm':
-                $builder->join('l.mother', $alias);
+                $builder->leftJoin('l.mother', $alias);
                 break;
             case 'f':
-                $builder->join('l.father', $alias);
+                $builder->leftJoin('l.father', $alias);
                 break;
             default:
                 throw new LogicException('Невозможно заджойнить алиас '.$alias);
@@ -31,7 +31,9 @@ class LitterSearch extends AbstractSearch
             'm.name' => AbstractSearch::DEFAULT,
             'f.name' => AbstractSearch::DEFAULT,
             'l.letter' => AbstractSearch::STRICT,
-            'l.birthday' => AbstractSearch::DATE
+            'l.birthday' => AbstractSearch::DATE,
+            'm.id' => AbstractSearch::STRICT,
+            'f.id' => AbstractSearch::STRICT
         ];
     }
 }
