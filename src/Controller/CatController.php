@@ -73,8 +73,8 @@ class CatController extends RestFormController
         $filters = json_decode($filters, true);
         $search = $data['search'] ?? "[]";
         $search = json_decode($search, true);
-        $cats = $service->getCount($service->buildBaseQuery($filters), $search);
-        return new JsonResponse(count($cats));
+        $count = $service->getCount($service->buildBaseQuery($filters), $search);
+        return new JsonResponse($count);
     }
 
     /**
