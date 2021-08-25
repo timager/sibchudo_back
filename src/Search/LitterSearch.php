@@ -7,16 +7,18 @@ namespace App\Search;
 use Doctrine\ORM\QueryBuilder;
 use LogicException;
 
-
-class CatSearch extends AbstractSearch
+class LitterSearch extends AbstractSearch
 {
 
 
     public function joinAlias(QueryBuilder $builder, string $alias): void
     {
         switch ($alias) {
-            case 'l':
-                $builder->join('c.litter', $alias);
+            case 'm':
+                $builder->join('l.mother', $alias);
+                break;
+            case 'f':
+                $builder->join('l.father', $alias);
                 break;
             default:
                 throw new LogicException('Невозможно заджойнить алиас '.$alias);
@@ -26,8 +28,9 @@ class CatSearch extends AbstractSearch
     public function getFields(): array
     {
         return [
-            'c.name' => AbstractSearch::DEFAULT,
-            'c.gender' => AbstractSearch::STRICT,
+            'm.name' => AbstractSearch::DEFAULT,
+            'f.name' => AbstractSearch::DEFAULT,
+            'l.letter' => AbstractSearch::STRICT,
             'l.birthday' => AbstractSearch::DATE
         ];
     }

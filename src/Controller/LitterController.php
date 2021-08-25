@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Litter;
 use App\Form\LitterType;
+use App\Service\LitterService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -14,16 +15,18 @@ class LitterController extends RestFormController
      * @Route("/api/litter", methods={"GET"})
      * @return JsonResponse
      */
-    public function getBy(): JsonResponse
+    public function getBy(LitterService $service): JsonResponse
     {
         $data = $this->getRequestQueryParams();
-        $criteria = $data['criteria'] ?? "[]";
-        $criteria = json_decode($criteria, true);
-        $limit = $data['limit'] ?? null;
-        $offset = $data['offset'] ?? null;
-        $order = $data['order'] ?? "[]";
-        $order = json_decode($order, true);
-        $litters = $this->getDoctrine()->getRepository(Litter::class)->findBy($criteria, $order, $limit, $offset);
+        $filters = $data['filters'] ?? "[]";
+        $filters = json_decode($filters, true);
+        $search = $data['search'] ?? "[]";
+        $search = json_decode($search, true);
+        $sort = $data['sort'] ?? "[]";
+        $sort = json_decode($sort, true);
+        $limit = $data['limit'] ?? PHP_INT_MAX;
+        $offset = $data['offset'] ?? 0;
+        $litters = $service->getLitters($service->buildBaseQuery($filters), $limit, $offset, $search, $sort);
         return $this->makeJsonResponse($litters);
     }
 
@@ -31,13 +34,15 @@ class LitterController extends RestFormController
      * @Route("/api/litter/count", methods={"GET"})
      * @return JsonResponse
      */
-    public function count(): JsonResponse
+    public function count(LitterService $service): JsonResponse
     {
         $data = $this->getRequestQueryParams();
-        $criteria = $data['criteria'] ?? "[]";
-        $criteria = json_decode($criteria, true);
-        $litters = $this->getDoctrine()->getRepository(Litter::class)->count($criteria);
-        return new JsonResponse($litters);
+        $filters = $data['filters'] ?? "[]";
+        $filters = json_decode($filters, true);
+        $search = $data['search'] ?? "[]";
+        $search = json_decode($search, true);
+        $count = $service->getCount($service->buildBaseQuery($filters), $search);
+        return new JsonResponse($count);
     }
 
     /**

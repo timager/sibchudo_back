@@ -32,7 +32,7 @@ class CatController extends RestFormController
         $search = json_decode($search, true);
         $sort = $data['sort'] ?? "[]";
         $sort = json_decode($sort, true);
-        $limit = $data['limit'] ?? 10;
+        $limit = $data['limit'] ?? PHP_INT_MAX;
         $offset = $data['offset'] ?? 0;
         $cats = $service->getCats($service->buildBaseQuery($filters), $limit, $offset, $search, $sort);
         return $this->makeJsonResponse($cats);
