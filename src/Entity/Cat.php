@@ -82,6 +82,7 @@ class Cat
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\CatStatus")
+     * @ORM\JoinColumn(nullable=false)
      * @Serializer\MaxDepth(1)
      */
     private ?CatStatus $status = null;
