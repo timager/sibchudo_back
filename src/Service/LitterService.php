@@ -35,6 +35,9 @@ class LitterService
     public function buildBaseQuery($filters = [])
     {
         $builder = $this->repository->createQueryBuilder('l');
+        if(array_key_exists('only_with_parents', $filters) && $filters['only_with_parents'] === true){
+            $builder->andWhere('l.mother IS NOT null OR l.father IS NOT null');
+        }
         return $builder;
     }
 }
