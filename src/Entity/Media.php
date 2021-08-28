@@ -35,6 +35,7 @@ class Media
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Cat", inversedBy="media")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private ?Cat $cat;
 
